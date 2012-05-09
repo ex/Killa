@@ -1,18 +1,18 @@
-Killa
-=====
+# Killa
 
 Killa is a programming language based in Lua and Javascript.
 
 
-Try yourself
-------------
+### Try yourself
 
 Go to the directory [bin/windows] and type: 
-    * killa test.kia
-    * killac -l test.kia
+<pre>
+killa test.kia
+killac -l test.kia
+</pre>
 
 
-Build
------
+### Build
+
 Use the provided Visual Studio 2008 solution.
 
