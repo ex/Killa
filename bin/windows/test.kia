@@ -1,0 +1,211 @@
+
+var x, y = "private x", "private y"
+public var x = {"asdasdad"}
+global.x.gg = "gg"
+public var y = null
+print(global.x.gg, global.y)
+print(x, y)
+
+var q = {}
+public var q = {}
+function q.f() {
+    print("local f()")
+}
+public function q.f() {
+    print("global f()")
+}
+global.q.f()
+q.f()
+
+var t = {100,200,300}
+for each (var k = 0 to 2) {
+    print(k ..") "..t[k])
+}
+for each (var k,v in ipairs(t)) {
+    print(k ..") "..v)
+}
+print($t);
+table.remove(t)
+for each (var k,v in ipairs(t)) {
+    print(k ..") "..v)
+}
+print($t);
+table.insert(t, 2, 700)
+print($t);
+var q = {}
+for each (var k,v in ipairs(t)) {
+    print(k ..") "..v)
+    table.insert(q, v);
+}
+table.sort(t, function(a, b) { return a > b })
+print(table.concat(t,",",1))
+for each (var i = 0 to $q - 1) {
+    print(i .."] "..tostring(q[i]))
+}
+
+var A = {tt: {x: 20}}
+function A::ax(yy) {
+    ////this.tt.x += yy
+}
+A::ax(10)
+print(A.tt.x)
+
+
+function fibonacci(n) {
+    if (n <= 1) {
+        return 1
+    }
+    return fibonacci(n - 1) + fibonacci(n - 2)
+}
+print(fibonacci(10))
+
+function fact(n, ans) {
+    call:
+    if (n == 0) {
+        return ans
+    }
+    else {
+        n, ans = n - 1, ans * n
+        goto call
+    }
+}
+print(fact(5, 1))
+
+for each (var z = 1 to 10) {
+    for each (var y = 1 to 10) {
+        for each (var x = 1 to 10) {
+            if (x ** 2 + y ** 2 == z ** 2) {
+                print('found a Pythagorean triple:', x, y, z)
+                print('now trying next z...')
+                goto zcontinue
+            }
+        }
+    }
+    zcontinue:
+}
+
+for each (var i = 2 to 9) {
+    var s = i .. ") "
+    for (var j,p = 1,1; p < 1_000_000; p *= i) {
+        s = s .. p .. " "
+    }
+    print(s)
+}
+
+//*
+function list_iterator(t) {
+    var i = -1
+    var n = $t
+    return function () {
+        i += 1
+        if (i < n) { return t[i] }
+    }
+}
+
+var t = {10, 20, 30, 40}
+for each (var element in list_iterator(t)) {
+    print(element)
+}
+
+dofile('to_string.kia');
+dofile('decrypt.kia');
+
+// Eratosthene's sieve
+function primes(limit) {
+    var sieve = { }
+    var ret = { }
+    var i = 2
+    while (i < limit) {
+        while (sieve[i]) {
+            i += 1
+        }
+        if (i < limit) {
+            table.insert(ret, i)
+            for (var j = i * i;  j <= limit; j += i) {
+                sieve[j] = true
+            }
+            i += 1
+        }
+    }
+    return ret
+}
+print(table.concat(primes(100),","))
+
+function printPowers(base, count) {
+    for (var k = 0; k < count; k += 1) {
+        print(base.."^"..k.." = "..(base ** k))
+    }
+}
+printPowers(2, 10)
+
+function fizzbuzz(min, max) {
+    var i = min
+    do {
+        if ((i % 3 == 0) && (i % 5 == 0)) {
+            print("- " .. i .. " FizzBuzz")
+        }
+        else if (i % 3 == 0) {
+            print("- " .. i .. " Fizz")    
+        }
+        else if (i % 5 == 0) {
+            print("- " .. i .. " Buzz")    
+        }
+        else {
+            print("- " .. i)
+        }
+        i +=  1
+    } while (i <= max)
+}
+fizzbuzz(5, 15)
+
+function fibonacci(n) {
+    if (n < 3) {
+        return n - 1
+    }
+    return fibonacci(n - 1) + fibonacci(n - 2)
+}
+var n = 1
+do {
+    print(n..": "..fibonacci(n))
+    n += 1
+} while (n <= 20)
+
+//print($"0123456789")
+//print(${1,2,3,4,5,6})
+//print(${key:1,2,3,4,5})
+
+public var x = 10     // global variable
+{                     // new block
+    var x = global.x  // new 'x', with value 10
+    print(x)          // 10
+    x = x + 1
+    {                 // another block
+        var x = x + 1 // another 'x'
+        print(x)      // 12
+    }
+    print(x)          // 11
+}
+print(global.x)       // 10  (the global one)
+
+var a = { };
+var x = 20;
+for (var i = 1; i <= 10; i += 1) {
+    var y = 0;
+    a[i] = function() { y += 1; return x + y; };
+}
+
+
+function trueExpr() { 
+    print("trueExpr")
+    return 10
+}
+function falseExpr() {
+    print("falseExpr")
+    return 9
+}
+
+var y = (true)? trueExpr(): falseExpr() // falseExpr is not called
+var x = (y < 6)? "less than 6" : (y % 2 == 0)? "even" : "odd"
+
+print(x) // Output: even
+

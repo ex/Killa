@@ -1,0 +1,45 @@
+
+function table_print(tt, indent, done) {
+    done = done || {}
+    indent = indent || 0
+    if (type(tt) == "table") {
+        var sb = {}
+        for each (var key, value in pairs(tt)) {
+            table.insert(sb, string.rep(" ", indent)) // indent it
+            if (type(value) == "table" && ! done[value]) {
+                done[value] = true
+                table.insert(sb, "{\n");
+                table.insert(sb, table_print(value, indent + 2, done))
+                table.insert(sb, string.rep(" ", indent)) // indent it
+                table.insert(sb, "}\n");
+            }
+            else if ("number" == type(key)) {
+                table.insert(sb, string.format("%s ", tostring(value)))
+            }
+            else {
+                table.insert(sb, string.format("%s = \"%s\"\n", 
+                                               tostring(key), 
+                                               tostring(value)))
+            }
+        }
+        return table.concat(sb)
+    }
+    else {
+        return tt .. "\n"
+    }
+}
+
+public function to_string(tbl) {
+    if ("null" == type(tbl)) {
+        return "null"
+    }
+    else if ("table" == type(tbl)) {
+        return table_print(tbl)
+    }
+    else if ("string" == type(tbl)) {
+        return tbl
+    }
+    else {
+        return tostring(tbl)
+    }
+}
