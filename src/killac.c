@@ -22,7 +22,7 @@
 #include "kstate.h"
 #include "kundump.h"
 
-static void PrintFunction(const Proto* f, int full);
+static void PrintFunction(const killa_Proto* f, int full);
 #define luaU_print	PrintFunction
 
 #define PROGNAME	"luac"		/* default program name */
@@ -50,14 +50,14 @@ static void cannot(const char* what)
 static void usage(const char* message)
 {
  if (*message=='-')
-  fprintf(stderr,"%s: unrecognized option " LUA_QS "\n",progname,message);
+  fprintf(stderr,"%s: unrecognized option " KILLA_QS "\n",progname,message);
  else
   fprintf(stderr,"%s: %s\n",progname,message);
  fprintf(stderr,
   "usage: %s [options] [filenames]\n"
   "Available options are:\n"
   "  -l       list (use -l -l for full listing)\n"
-  "  -o name  output to file " LUA_QL("name") " (default is \"%s\")\n"
+  "  -o name  output to file " KILLA_QL("name") " (default is \"%s\")\n"
   "  -p       parse only\n"
   "  -s       strip debug information\n"
   "  -v       show version information\n"
@@ -92,7 +92,7 @@ static int doargs(int argc, char* argv[])
   {
    output=argv[++i];
    if (output==NULL || *output==0 || (*output=='-' && output[1]!=0))
-    usage(LUA_QL("-o") " needs argument");
+    usage(KILLA_QL("-o") " needs argument");
    if (IS("-")) output=NULL;
   }
   else if (IS("-p"))			/* parse only */
@@ -119,9 +119,9 @@ static int doargs(int argc, char* argv[])
 
 #define FUNCTION "(function()end)();"
 
-static const char* reader(lua_State *L, void *ud, size_t *size)
+static const char* reader(killa_State *L, void *ud, size_t *size)
 {
- UNUSED(L);
+ KILLA_UNUSED(L);
  if ((*(int*)ud)--)
  {
   *size=sizeof(FUNCTION)-1;
@@ -134,17 +134,17 @@ static const char* reader(lua_State *L, void *ud, size_t *size)
  }
 }
 
-#define toproto(L,i) getproto(L->top+(i))
+#define toproto(L,i) killa_getproto(L->top+(i))
 
-static const Proto* combine(lua_State* L, int n)
+static const killa_Proto* combine(killa_State* L, int n)
 {
  if (n==1)
   return toproto(L,-1);
  else
  {
-  Proto* f;
+  killa_Proto* f;
   int i=n;
-  if (lua_load(L,reader,&i,"=(" PROGNAME ")",NULL)!=LUA_OK) fatal(lua_tostring(L,-1));
+  if (killa_load(L,reader,&i,"=(" PROGNAME ")",NULL)!=KILLA_OK) fatal(killa_tostring(L,-1));
   f=toproto(L,-1);
   for (i=0; i<n; i++)
   {
@@ -156,23 +156,23 @@ static const Proto* combine(lua_State* L, int n)
  }
 }
 
-static int writer(lua_State* L, const void* p, size_t size, void* u)
+static int writer(killa_State* L, const void* p, size_t size, void* u)
 {
- UNUSED(L);
+ KILLA_UNUSED(L);
  return (fwrite(p,size,1,(FILE*)u)!=1) && (size!=0);
 }
 
-static int pmain(lua_State* L)
+static int pmain(killa_State* L)
 {
- int argc=(int)lua_tointeger(L,1);
- char** argv=(char**)lua_touserdata(L,2);
- const Proto* f;
+ int argc=(int)killa_tointeger(L,1);
+ char** argv=(char**)killa_touserdata(L,2);
+ const killa_Proto* f;
  int i;
- if (!lua_checkstack(L,argc)) fatal("too many input files");
+ if (!killa_checkstack(L,argc)) fatal("too many input files");
  for (i=0; i<argc; i++)
  {
   const char* filename=IS("-") ? NULL : argv[i];
-  if (luaL_loadfile(L,filename)!=LUA_OK) fatal(lua_tostring(L,-1));
+  if (killaL_loadfile(L,filename)!=KILLA_OK) fatal(killa_tostring(L,-1));
  }
  f=combine(L,argc);
  if (listing) luaU_print(f,listing>1);
@@ -180,9 +180,9 @@ static int pmain(lua_State* L)
  {
   FILE* D= (output==NULL) ? stdout : fopen(output,"wb");
   if (D==NULL) cannot("open");
-  lua_lock(L);
-  luaU_dump(L,f,writer,D,stripping);
-  lua_unlock(L);
+  killa_lock(L);
+  killaU_dump(L,f,writer,D,stripping);
+  killa_unlock(L);
   if (ferror(D)) cannot("write");
   if (fclose(D)) cannot("close");
  }
@@ -191,17 +191,17 @@ static int pmain(lua_State* L)
 
 int main(int argc, char* argv[])
 {
- lua_State* L;
+ killa_State* L;
  int i=doargs(argc,argv);
  argc-=i; argv+=i;
  if (argc<=0) usage("no input files given");
- L=luaL_newstate();
+ L=killaL_newstate();
  if (L==NULL) fatal("cannot create state: not enough memory");
- lua_pushcfunction(L,&pmain);
- lua_pushinteger(L,argc);
- lua_pushlightuserdata(L,argv);
- if (lua_pcall(L,2,0,0)!=LUA_OK) fatal(lua_tostring(L,-1));
- lua_close(L);
+ killa_pushcfunction(L,&pmain);
+ killa_pushinteger(L,argc);
+ killa_pushlightuserdata(L,argv);
+ if (killa_pcall(L,2,0,0)!=KILLA_OK) fatal(killa_tostring(L,-1));
+ killa_close(L);
  return EXIT_SUCCESS;
 }
 
@@ -215,7 +215,7 @@ int main(int argc, char* argv[])
 #include <stdio.h>
 
 #define luac_c
-#define LUA_CORE
+#define KILLA_CORE
 
 #include "kdebug.h"
 #include "kobject.h"
@@ -223,9 +223,9 @@ int main(int argc, char* argv[])
 
 #define VOID(p)		((const void*)(p))
 
-static void PrintString(const TString* ts)
+static void PrintString(const killa_TString* ts)
 {
- const char* s=getstr(ts);
+ const char* s=killa_getstr(ts);
  size_t i,n=ts->tsv.len;
  printf("%c",'"');
  for (i=0; i<n; i++)
@@ -251,61 +251,61 @@ static void PrintString(const TString* ts)
  printf("%c",'"');
 }
 
-static void PrintConstant(const Proto* f, int i)
+static void PrintConstant(const killa_Proto* f, int i)
 {
- const TValue* o=&f->k[i];
- switch (ttype(o))
+ const killa_TValue* o=&f->k[i];
+ switch (killa_ttype(o))
  {
   case KILLA_TNULL:
 	printf("nil");
 	break;
-  case LUA_TBOOLEAN:
-	printf(bvalue(o) ? "true" : "false");
+  case KILLA_TBOOLEAN:
+	printf(killa_bvalue(o) ? "true" : "false");
 	break;
-  case LUA_TNUMBER:
-	printf(LUA_NUMBER_FMT,nvalue(o));
+  case KILLA_TNUMBER:
+	printf(KILLA_NUMBER_FMT,killa_nvalue(o));
 	break;
-  case LUA_TSTRING:
-	PrintString(rawtsvalue(o));
+  case KILLA_TSTRING:
+	PrintString(killa_rawtsvalue(o));
 	break;
   default:				/* cannot happen */
-	printf("? type=%d",ttype(o));
+	printf("? type=%d",killa_ttype(o));
 	break;
  }
 }
 
-#define UPVALNAME(x) ((f->upvalues[x].name) ? getstr(f->upvalues[x].name) : "-")
+#define UPVALNAME(x) ((f->upvalues[x].name) ? killa_getstr(f->upvalues[x].name) : "-")
 #define MYK(x)		(-1-(x))
 
-static void PrintCode(const Proto* f)
+static void PrintCode(const killa_Proto* f)
 {
- const Instruction* code=f->code;
+ const killa_Instruction* code=f->code;
  int pc,n=f->sizecode;
  for (pc=0; pc<n; pc++)
  {
-  Instruction i=code[pc];
-  OpCode o=GET_OPCODE(i);
-  int a=GETARG_A(i);
-  int b=GETARG_B(i);
-  int c=GETARG_C(i);
-  int ax=GETARG_Ax(i);
-  int bx=GETARG_Bx(i);
-  int sbx=GETARG_sBx(i);
-  int line=getfuncline(f,pc);
+  killa_Instruction i=code[pc];
+  killa_OpCode o=KILLA_GET_OPCODE(i);
+  int a=KILLA_GETARG_A(i);
+  int b=KILLA_GETARG_B(i);
+  int c=KILLA_GETARG_C(i);
+  int ax=KILLA_GETARG_Ax(i);
+  int bx=KILLA_GETARG_Bx(i);
+  int sbx=KILLA_GETARG_sBx(i);
+  int line=killa_getfuncline(f,pc);
   printf("\t%d\t",pc+1);
   if (line>0) printf("[%d]\t",line); else printf("[-]\t");
-  printf("%-9s\t",luaP_opnames[o]);
-  switch (getOpMode(o))
+  printf("%-9s\t",killaP_opnames[o]);
+  switch (killa_getOpMode(o))
   {
    case iABC:
     printf("%d",a);
-    if (getBMode(o)!=OpArgN) printf(" %d",ISK(b) ? (MYK(INDEXK(b))) : b);
-    if (getCMode(o)!=OpArgN) printf(" %d",ISK(c) ? (MYK(INDEXK(c))) : c);
+    if (killa_getBMode(o)!=OpArgN) printf(" %d",KILLA_ISK(b) ? (MYK(KILLA_INDEXK(b))) : b);
+    if (killa_getCMode(o)!=OpArgN) printf(" %d",KILLA_ISK(c) ? (MYK(KILLA_INDEXK(c))) : c);
     break;
    case iABx:
     printf("%d",a);
-    if (getBMode(o)==OpArgK) printf(" %d",MYK(bx));
-    if (getBMode(o)==OpArgU) printf(" %d",bx);
+    if (killa_getBMode(o)==OpArgK) printf(" %d",MYK(bx));
+    if (killa_getBMode(o)==OpArgU) printf(" %d",bx);
     break;
    case iAsBx:
     printf("%d %d",a,sbx);
@@ -325,16 +325,16 @@ static void PrintCode(const Proto* f)
     break;
    case OP_GETTABUP:
     printf("\t; %s",UPVALNAME(b));
-    if (ISK(c)) { printf(" "); PrintConstant(f,INDEXK(c)); }
+    if (KILLA_ISK(c)) { printf(" "); PrintConstant(f,KILLA_INDEXK(c)); }
     break;
    case OP_SETTABUP:
     printf("\t; %s",UPVALNAME(a));
-    if (ISK(b)) { printf(" "); PrintConstant(f,INDEXK(b)); }
-    if (ISK(c)) { printf(" "); PrintConstant(f,INDEXK(c)); }
+    if (KILLA_ISK(b)) { printf(" "); PrintConstant(f,KILLA_INDEXK(b)); }
+    if (KILLA_ISK(c)) { printf(" "); PrintConstant(f,KILLA_INDEXK(c)); }
     break;
    case OP_GETTABLE:
    case OP_SELF:
-    if (ISK(c)) { printf("\t; "); PrintConstant(f,INDEXK(c)); }
+    if (KILLA_ISK(c)) { printf("\t; "); PrintConstant(f,KILLA_INDEXK(c)); }
     break;
    case OP_SETTABLE:
    case OP_ADD:
@@ -345,12 +345,12 @@ static void PrintCode(const Proto* f)
    case OP_EQ:
    case OP_LT:
    case OP_LE:
-    if (ISK(b) || ISK(c))
+    if (KILLA_ISK(b) || KILLA_ISK(c))
     {
      printf("\t; ");
-     if (ISK(b)) PrintConstant(f,INDEXK(b)); else printf("-");
+     if (KILLA_ISK(b)) PrintConstant(f,KILLA_INDEXK(b)); else printf("-");
      printf(" ");
-     if (ISK(c)) PrintConstant(f,INDEXK(c)); else printf("-");
+     if (KILLA_ISK(c)) PrintConstant(f,KILLA_INDEXK(c)); else printf("-");
     }
     break;
    case OP_JMP:
@@ -378,9 +378,9 @@ static void PrintCode(const Proto* f)
 #define SS(x)	((x==1)?"":"s")
 #define S(x)	(int)(x),SS(x)
 
-static void PrintHeader(const Proto* f)
+static void PrintHeader(const killa_Proto* f)
 {
- const char* s=f->source ? getstr(f->source) : "=?";
+ const char* s=f->source ? killa_getstr(f->source) : "=?";
  if (*s=='@' || *s=='=')
   s++;
  else if (*s==KILLA_SIGNATURE[0])
@@ -398,7 +398,7 @@ static void PrintHeader(const Proto* f)
 	S(f->sizelocvars),S(f->sizek),S(f->sizep));
 }
 
-static void PrintDebug(const Proto* f)
+static void PrintDebug(const killa_Proto* f)
 {
  int i,n;
  n=f->sizek;
@@ -414,7 +414,7 @@ static void PrintDebug(const Proto* f)
  for (i=0; i<n; i++)
  {
   printf("\t%d\t%s\t%d\t%d\n",
-  i,getstr(f->locvars[i].varname),f->locvars[i].startpc+1,f->locvars[i].endpc+1);
+  i,killa_getstr(f->locvars[i].varname),f->locvars[i].startpc+1,f->locvars[i].endpc+1);
  }
  n=f->sizeupvalues;
  printf("upvalues (%d) for %p:\n",n,VOID(f));
@@ -425,7 +425,7 @@ static void PrintDebug(const Proto* f)
  }
 }
 
-static void PrintFunction(const Proto* f, int full)
+static void PrintFunction(const killa_Proto* f, int full)
 {
  int i,n=f->sizep;
  PrintHeader(f);
