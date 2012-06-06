@@ -56,8 +56,8 @@ static int tinsert (killa_State *L) {
         killa_rawgeti(L, 1, i-1);
         killa_rawseti(L, 1, i);  /* t[i] = t[i-1] */
       }
-#ifdef KILLA_BASE_WARNING
-      killaL_warning(L, "using table.insert with base-1 index");
+#if (KILLA_BASE != 1) && (KILLA_BASE_WARNING == 1)
+      killaL_warning(L, "using table.insert with possible base-1 index");
 #endif
       break;
     }
@@ -73,9 +73,9 @@ static int tinsert (killa_State *L) {
 static int tremove (killa_State *L) {
   int e = aux_getn(L, 1);
   int pos = killaL_optint(L, 2, (e + KILLA_BASE - 1));
-#ifdef KILLA_BASE_WARNING
+#if (KILLA_BASE != 1) && (KILLA_BASE_WARNING == 1)
   if (killa_gettop(L) > 1) {
-    killaL_warning(L, "using table.remove with base-1 index");
+    killaL_warning(L, "using table.remove with possible base-1 index");
   }
 #endif
   if (!(KILLA_BASE <= pos && (pos + 1 - KILLA_BASE <= e)))  /* position is outside bounds? */
@@ -106,9 +106,9 @@ static int tconcat (killa_State *L) {
   int i, last;
   const char *sep = killaL_optlstring(L, 2, "", &lsep);
   killaL_checktype(L, 1, KILLA_TTABLE);
-#ifdef KILLA_BASE_WARNING
+#if (KILLA_BASE != 1) && (KILLA_BASE_WARNING == 1)
   if (killa_gettop(L) > 2) {
-    killaL_warning(L, "using table.concat with base-1 index");
+    killaL_warning(L, "using table.concat with possible base-1 index");
   }
 #endif
   i = killaL_optint(L, 3, KILLA_BASE);

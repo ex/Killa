@@ -517,6 +517,32 @@
 #endif							/* } */
 
 
+/*
+@@ KILLA_BASE is the index base used by array tables.
+** CHANGE it to 1 if you desire Lua compatibility.
+** By default Killa uses indexes base zero.
+*/
+#define KILLA_BASE  0
+
+
+/*
+@@ KILLA_BASE_WARNING enables warning messages on Lua ported code.
+** CHANGE it to 1 if you want warning messages running Lua scripts
+** ported to Killa, ie:
+**     table.insert(t, 2, 100)
+** would print a warning message because the index 2 is the second 
+** element in Lua but the third element in Killa.
+*/
+#define KILLA_BASE_WARNING  0
+
+
+/*
+@@ KILLA_STRICT_TABLES controls the syntax of table constructors. 
+** CHANGE it (undefine it) if you want Lua compatibility.
+** By default Killa disallows the construction of array tables
+** with the table constructor: { }
+*/
+#define KILLA_STRICT_TABLES
 
 
 /* =================================================================== */

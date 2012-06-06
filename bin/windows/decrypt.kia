@@ -28,7 +28,7 @@ var freqLang = "TEOIARNSHLMYUCWDGPFBVKJ"
 
 // Create frequency table of the encrypted text.
 var len = string.len(text)
-var frequency = {}
+var frequency = []
 
 for each (var k = 1 to len) {
 	var c = string.upper(string.sub(text, k, k));
@@ -60,9 +60,9 @@ var index = 1
 
 for each (var k,v in pairs(sortFreq)) {
     ////print(v.key, v.value)
-    freqText = freqText .. v.key
+    freqText ..= v.key
     dic[v.key] = string.sub(freqLang, index, index)
-    index = index + 1
+    index += 1
 }
 
 ////print(freqText); // encrypted text frequency
@@ -83,14 +83,14 @@ for each (var k = 1 to len) {
 
 	if (dic[c] != null) {
 		if (upper)	{
-            decrypted = decrypted .. dic[c]
+            decrypted ..= dic[c]
         }
 		else {
-            decrypted = decrypted .. string.lower(dic[c])
+            decrypted ..= string.lower(dic[c])
         }
     }
 	else {
-        decrypted = decrypted .. c
+        decrypted ..= c
     }
 }
 

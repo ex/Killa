@@ -43,13 +43,12 @@ static const char *const killaX_tokens [] = {
     /* FUTURE RESERVED */
     "case", "catch", "class", "const", "continue", 
     "default", "extends", "finally", "implements", "import",
-    "interface", "new", "object", "override", "protected", 
-    "super", "switch", "throw", "try", "undefined", 
-    "void",
+    "interface", "new", "override", "protected", "static",
+    "super", "switch", "throw", "try", "undefined",
     /* other terminal symbols */
     "!", "&&", "||", "**", "::", 
     "..", "...", "==", ">=", "<=", "!=",
-    "+=", "-=", "*=", "/=", "%=",
+    "+=", "-=", "*=", "/=", "%=", "..=",
     "<eof>", "<number>", "<name>", "<string>"
 };
 
@@ -529,7 +528,13 @@ static int llex (killa_LexState *ls, killa_SemInfo *seminfo) {
         if (check_next(ls, ".")) {
           if (check_next(ls, "."))
             return TK_DOTS;   /* '...' */
-          else return TK_CONCAT;   /* '..' */
+          else
+              if (ls->current == '=') {
+                next(ls);
+                return TK_CCONCAT;
+              }
+              else 
+                return TK_CONCAT;   /* '..' */
         }
         else if (!killa_isdigit(ls->current)) return '.';
         /* else go through */
@@ -554,7 +559,7 @@ static int llex (killa_LexState *ls, killa_SemInfo *seminfo) {
           if (ts->tsv.reserved > 0) { /* reserved word? */
             int tokenid = ts->tsv.reserved + KILLA_FIRST_RESERVED - 1;
             /* FUTURE RESERVED */
-            if ((tokenid >= TK_CASE) && (tokenid <= TK_VOID)) {
+            if ((tokenid >= TK_CASE) && (tokenid <= TK_UNDEFINED)) {
               const char *msg = killaO_pushfstring(ls->L, "using not implemented word " KILLA_QS, killa_getstr(ts));
               lexerror(ls, msg, 0);
             }

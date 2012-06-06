@@ -115,13 +115,6 @@ typedef void * (*killa_Alloc) (void *ud, void *ptr, size_t osize, size_t nsize);
 #define KILLA_MINSTACK	20
 
 
-/* use this define to configure the index base for tables */
-#define KILLA_BASE      0
-#if (KILLA_BASE != 1)
-#define KILLA_BASE_WARNING
-#endif
-
-
 /* predefined values in the registry */
 #define KILLA_RIDX_MAINTHREAD   (KILLA_BASE? 1 : 0)
 #define KILLA_RIDX_GLOBALS      (KILLA_BASE? 2 : 1)

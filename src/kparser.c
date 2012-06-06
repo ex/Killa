@@ -724,9 +724,11 @@ static void field (killa_LexState *ls, struct ConsControl *cc) {
   /* field -> listfield | recfield */
   switch(ls->t.token) {
     case TK_NAME: {  /* may be 'listfield' or 'recfield' */
+#ifndef KILLA_STRICT_TABLES
       if (killaX_lookahead(ls) != ':')  /* expression? */
         listfield(ls, cc);
       else
+#endif
         recfield(ls, cc);
       break;
     }
@@ -734,10 +736,12 @@ static void field (killa_LexState *ls, struct ConsControl *cc) {
       recfield(ls, cc);
       break;
     }
+#ifndef KILLA_STRICT_TABLES
     default: {
       listfield(ls, cc);
       break;
     }
+#endif
   }
 }
 
@@ -762,6 +766,31 @@ static void constructor (killa_LexState *ls, killa_expdesc *t) {
     field(ls, &cc);
   } while (testnext(ls, ',') || testnext(ls, ';'));
   check_match(ls, '}', '{', line);
+  lastlistfield(fs, &cc);
+  KILLA_SETARG_B(fs->f->code[pc], killaO_int2fb(cc.na)); /* set initial array size */
+  KILLA_SETARG_C(fs->f->code[pc], killaO_int2fb(cc.nh));  /* set initial table size */
+}
+
+
+static void array (killa_LexState *ls, killa_expdesc *t) {
+  /* array -> '[' [ item { ',' item } [ ',' ] ] ']' */
+  killa_FuncState *fs = ls->fs;
+  int line = ls->linenumber;
+  int pc = killaK_codeABC(fs, OP_NEWTABLE, 0, 0, 0);
+  struct ConsControl cc;
+  cc.na = cc.nh = cc.tostore = 0;
+  cc.t = t;
+  init_exp(t, VRELOCABLE, pc);
+  init_exp(&cc.v, VVOID, 0);  /* no value (yet) */
+  killaK_exp2nextreg(ls->fs, t);  /* fix it at stack top */
+  checknext(ls, '[');
+  do {
+    killa_assert(cc.v.k == VVOID || cc.tostore > 0);
+    if (ls->t.token == ']') break;
+    closelistfield(fs, &cc);
+    listfield(ls, &cc);
+  } while (testnext(ls, ','));
+  check_match(ls, ']', '[', line);
   lastlistfield(fs, &cc);
   KILLA_SETARG_B(fs->f->code[pc], killaO_int2fb(cc.na)); /* set initial array size */
   KILLA_SETARG_C(fs->f->code[pc], killaO_int2fb(cc.nh));  /* set initial table size */
@@ -1003,6 +1032,10 @@ static void simpleexp (killa_LexState *ls, killa_expdesc *v) {
       constructor(ls, v);
       return;
     }
+    case '[': {  /* array */
+      array(ls, v);
+      return;
+    }
     case TK_FUNCTION: {
       killaX_next(ls);
       body(ls, v, 0, ls->linenumber);
@@ -1049,6 +1082,7 @@ static killaK_BinOpr getbinopr (int op) {
     case TK_CMUL: return OPR_MUL;
     case TK_CDIV: return OPR_DIV;
     case TK_CMOD: return OPR_MOD;
+    case TK_CCONCAT: return OPR_CONCAT;
     default: return OPR_NOBINOPR;
   }
 }

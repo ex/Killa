@@ -1,6 +1,7 @@
 
+
 var x, y = "private x", "private y"
-public var x = {"asdasdad"}
+public var x = ["asdasdad"]
 global.x.gg = "gg"
 public var y = null
 print(global.x.gg, global.y)
@@ -17,7 +18,7 @@ public function q.f() {
 global.q.f()
 q.f()
 
-var t = {100,200,300}
+var t = [100,200,300]
 for each (var k = 0 to 2) {
     print(k ..") "..t[k])
 }
@@ -102,7 +103,7 @@ function list_iterator(t) {
     }
 }
 
-var t = {10, 20, 30, 40}
+var t = [10, 20, 30, 40]
 for each (var element in list_iterator(t)) {
     print(element)
 }
@@ -110,10 +111,10 @@ for each (var element in list_iterator(t)) {
 dofile('to_string.kia');
 dofile('decrypt.kia');
 
-// Eratosthene's sieve
+// Sieve of Eratosthenes
 function primes(limit) {
-    var sieve = { }
-    var ret = { }
+    var sieve = []
+    var ret = []
     var i = 2
     while (i < limit) {
         while (sieve[i]) {
@@ -187,12 +188,20 @@ public var x = 10     // global variable
 }
 print(global.x)       // 10  (the global one)
 
-var a = { };
-var x = 20;
-for (var i = 1; i <= 10; i += 1) {
-    var y = 0;
-    a[i] = function() { y += 1; return x + y; };
+
+var closures = []
+var cx = 20
+for (var i = 0; i < 10; i += 1) {
+    var y = 0
+    closures[i] = function() { y += 1; return cx + y }
 }
+print("closures[0](): "..closures[0]())
+print("closures[0](): "..closures[0]())
+print("closures[0](): "..closures[0]())
+print("closures[1](): "..closures[1]())
+cx = 200
+print("closures[0](): "..closures[0]())
+print("closures[1](): "..closures[1]())
 
 
 function trueExpr() { 
@@ -203,9 +212,33 @@ function falseExpr() {
     print("falseExpr")
     return 9
 }
-
 var y = (true)? trueExpr(): falseExpr() // falseExpr is not called
 var x = (y < 6)? "less than 6" : (y % 2 == 0)? "even" : "odd"
-
 print(x) // Output: even
 
+
+var s1 = 'testing '
+s1 ..= "concatenation"
+print(s1) // prints: "testing concatenation"
+
+
+////var mixed = {1, 3, name: "foo", ['new']: 234}  // mixed table constructor disallowed
+////print(to_string(mixed))
+
+
+function getAverage(array) {
+    var sum = 0
+    var length = $array
+    if (length < 1) {
+        return null
+    }
+    for (var k = 0; k < length; k += 1) {
+        sum += array[k]
+    }
+    return sum / length
+}
+print(getAverage([10, 20, 40, 50])) 
+print(getAverage([]))
+
+
+//*/

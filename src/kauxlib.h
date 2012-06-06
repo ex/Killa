@@ -61,7 +61,7 @@ KILLALIB_API void *(killaL_checkudata) (killa_State *L, int ud, const char *tnam
 
 KILLALIB_API void (killaL_where) (killa_State *L, int lvl);
 KILLALIB_API int (killaL_error) (killa_State *L, const char *fmt, ...);
-#ifdef KILLA_BASE_WARNING
+#if (KILLA_BASE != 1) && (KILLA_BASE_WARNING == 1)
 KILLALIB_API void (killaL_warning) (killa_State *L, const char *fmt);
 #endif
 

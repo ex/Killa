@@ -205,7 +205,7 @@ KILLALIB_API int killaL_error (killa_State *L, const char *fmt, ...) {
 }
 
 
-#ifdef KILLA_BASE_WARNING
+#if (KILLA_BASE != 1) && (KILLA_BASE_WARNING == 1)
 KILLALIB_API void killaL_warning (killa_State *L, const char *msg) {
   killa_Debug ar;
   if (killa_getstack(L, 1, &ar)) {  /* check function at level */
