@@ -23,6 +23,9 @@
 #include "killalib.h"
 #include "kauxlib.h"
 
+//#ifdef KILLA_EXT_BC
+#include "lbc.h"
+//#endif
 
 /*
 ** these libs are loaded by killa.c and are readily available to any Killa
@@ -47,6 +50,11 @@ static const killaL_Reg loadedlibs[] = {
 ** these libs are preloaded and must be required before used
 */
 static const killaL_Reg preloadedlibs[] = {
+#ifdef KILLA_EXTENDED
+#ifdef KILLA_EXTENDED_BC
+  {"bc", luaopen_bc},
+#endif
+#endif
   {NULL, NULL}
 };
 

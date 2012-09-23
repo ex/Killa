@@ -17,12 +17,12 @@ function table_print(tt, indent, done) {
                 table.insert(sb, string.format("%s ", tostring(value)))
             }
             else {
-                table.insert(sb, string.format("%s = \"%s\"\n", 
-                                               tostring(key), 
-                                               tostring(value)))
+                table.insert(sb, string.format("%s: %s; ",
+                                               to_string(key),
+                                               to_string(value)))
             }
         }
-        return table.concat(sb)
+        return '{'..table.concat(sb)..'}'
     }
     else {
         return tt .. "\n"

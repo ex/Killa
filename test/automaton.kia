@@ -1,0 +1,54 @@
+
+// A small ascii-art program in Killa (translated from Python).
+// Original author: Danny Yoo
+// See: http://www.wolframscience.com/preview/nks_pages/?NKS0032.gif
+// and Wolfram's "A New Kind of Science" for more information.
+
+// Wolfram's automaton uses eight rules for generating the next row of
+// output.  Let's take a look at them.
+var RULE_100 = { ["111"]: 0,
+                 ["110"]: 1,
+                 ["101"]: 1,
+                 ["100"]: 0,
+                 ["011"]: 1,
+                 ["010"]: 1,
+                 ["001"]: 1,
+                 ["000"]: 0 }
+
+function drawRow(row) {
+    for each (var _,character in ipairs(row)) {
+        if (character == 1) {
+            io.write('O')
+        }
+        else {
+            io.write('.')
+        }
+    }
+    io.write('\n')
+}
+
+var STARTING_ROW = {}
+for each (var i = 1 to 75) {
+    if (i != 73) { 
+        table.insert(STARTING_ROW,0)
+    }
+    else {
+        table.insert(STARTING_ROW,1)
+    }
+}
+
+function applyRuleOnRow(rule, row) {
+    var new_row = [0]
+    for each (var i = 1 to $row - 2) {
+        var triple = string.format("%s%s%s", row[i-1], row[i], row[i+1])
+        table.insert(new_row, rule[triple])
+    }
+    table.insert(new_row, 0)
+    return new_row
+}
+
+var row = STARTING_ROW
+for each (var i = 1 to 70) {
+    drawRow(row)
+    row = applyRuleOnRow(RULE_100, row)
+}

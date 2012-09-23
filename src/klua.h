@@ -20,6 +20,8 @@
 #include <killalib.h>
 #include <kauxlib.h>
 
+#define LUALIB_API          KILLALIB_API
+#define LUA_VERSION         KILLA_VERSION
 
 #define LUA_ERRMEM          KILLA_ERRMEM
 #define LUA_ERRRUN          KILLA_ERRRUN
@@ -141,6 +143,8 @@
 #define luaL_reg            killaL_Reg
 #define luaL_Reg            killaL_Reg
 #define luaL_register       killaL_register
+#define luaL_setmetatable   killaL_setmetatable
+#define luaL_setfuncs       killaL_setfuncs
 #define luaL_typename       killaL_typename
 #define luaL_typerror       killaL_typerror
 #define luaL_unref          killaL_unref
