@@ -23,9 +23,9 @@
 #include "killalib.h"
 #include "kauxlib.h"
 
-//#ifdef KILLA_EXT_BC
+#ifdef KILLA_EXT_BC
 #include "lbc.h"
-//#endif
+#endif
 
 /*
 ** these libs are loaded by killa.c and are readily available to any Killa

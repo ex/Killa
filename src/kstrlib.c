@@ -46,7 +46,7 @@ static int str_len (killa_State *L) {
 
 /* translate a relative string position: negative means back from end */
 static size_t posrelat (ptrdiff_t pos, size_t len) {
-  if (pos >= 0) return (size_t)pos;
+  if (pos >= 0) return (size_t)pos + 1 - KILLA_BASE;
   else if (0u - (size_t)pos > len) return 0;
   else return len - ((size_t)-pos) + 1;
 }
@@ -57,6 +57,9 @@ static int str_sub (killa_State *L) {
   const char *s = killaL_checklstring(L, 1, &l);
   size_t start = posrelat(killaL_checkinteger(L, 2), l);
   size_t end = posrelat(killaL_optinteger(L, 3, -1), l);
+#if (KILLA_BASE != 1) && (KILLA_BASE_WARNING == 1)
+  killaL_warning(L, "using string.sub with possible base-1 index");
+#endif
   if (start < 1) start = 1;
   if (end > l) end = l;
   if (start <= end)
@@ -133,9 +136,17 @@ static int str_rep (killa_State *L) {
 static int str_byte (killa_State *L) {
   size_t l;
   const char *s = killaL_checklstring(L, 1, &l);
-  size_t posi = posrelat(killaL_optinteger(L, 2, 1), l);
-  size_t pose = posrelat(killaL_optinteger(L, 3, posi), l);
+  size_t posi = posrelat(killaL_optinteger(L, 2, KILLA_BASE), l);
+  size_t pose = posi;
   int n, i;
+#if (KILLA_BASE != 1) && (KILLA_BASE_WARNING == 1)
+  if (killa_gettop(L) > 1) {
+    killaL_warning(L, "using string.byte with possible base-1 index");
+  }
+#endif
+  if (killa_gettop(L) > 2) {
+    pose = posrelat(killaL_checkint(L, 3), l);
+  }
   if (posi < 1) posi = 1;
   if (pose > l) pose = l;
   if (posi > pose) return 0;  /* empty interval; return no values */
@@ -537,7 +548,7 @@ static int str_find_aux (killa_State *L, int find) {
   size_t ls, lp;
   const char *s = killaL_checklstring(L, 1, &ls);
   const char *p = killaL_checklstring(L, 2, &lp);
-  size_t init = posrelat(killaL_optinteger(L, 3, 1), ls);
+  size_t init = posrelat(killaL_optinteger(L, 3, KILLA_BASE), ls);
   if (init < 1) init = 1;
   else if (init > ls + 1) {  /* start after string's end? */
     killa_pushnull(L);  /* cannot find anything */
@@ -548,8 +559,8 @@ static int str_find_aux (killa_State *L, int find) {
     /* do a plain search */
     const char *s2 = lmemfind(s + init - 1, ls - init + 1, p, lp);
     if (s2) {
-      killa_pushinteger(L, s2 - s + 1);
-      killa_pushinteger(L, s2 - s + lp);
+      killa_pushinteger(L, s2 - s + KILLA_BASE);
+      killa_pushinteger(L, s2 - s + lp - 1 + KILLA_BASE);
       return 2;
     }
   }
@@ -569,8 +580,8 @@ static int str_find_aux (killa_State *L, int find) {
       ms.level = 0;
       if ((res=match(&ms, s1, p)) != NULL) {
         if (find) {
-          killa_pushinteger(L, s1 - s + 1);  /* start */
-          killa_pushinteger(L, res - s);   /* end */
+          killa_pushinteger(L, s1 - s + KILLA_BASE);  /* start */
+          killa_pushinteger(L, res - s - 1 + KILLA_BASE);   /* end */
           return push_captures(&ms, NULL, 0) + 2;
         }
         else
@@ -584,11 +595,21 @@ static int str_find_aux (killa_State *L, int find) {
 
 
 static int str_find (killa_State *L) {
+#if (KILLA_BASE != 1) && (KILLA_BASE_WARNING == 1)
+  if (killa_gettop(L) > 2) {
+    killaL_warning(L, "using string.find with possible base-1 index");
+  }
+#endif
   return str_find_aux(L, 1);
 }
 
 
 static int str_match (killa_State *L) {
+#if (KILLA_BASE != 1) && (KILLA_BASE_WARNING == 1)
+  if (killa_gettop(L) > 2) {
+    killaL_warning(L, "using string.match with possible base-1 index");
+  }
+#endif
   return str_find_aux(L, 0);
 }
 

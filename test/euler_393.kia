@@ -7,10 +7,11 @@ var OUT = 2
 
 function shrink(t, start, end) {
     var out = [start]
+    var insert = global.table.insert
     for each (var k = 2 to $t - 1) {
-        table.insert(out, t[k])
+        insert(out, t[k])
     }
-    table.insert(out, end)
+    insert(out, end)
     return out
 }
 
@@ -29,29 +30,29 @@ function euler_393(n) {
     for (var k = 0; k < n; k += 1) {
         table.insert(noarrow[1], 0)
     }
-    var D = {}
     var ns = table.concat(noarrow[1], ',')
-    D[ns] = noarrow
+    var D = {ns: noarrow}
+    var D1
+    var t1
 
     // Columns
-    for each (var i = 0 to n - 1) {
-        // All rows but last row (arrows right and down)
-        for each (var j = 0 to n - 2) {
-            var D1 = {}
-            var t1
+    for (var i = 0; i < n; i += 1) {
+        // Rows
+        for (var j = 0; j < n; j += 1) {
+            D1 = {}
             for each (var t,v in pairs(D)) {
                 if (v[1][0] == 0) {
-                    if (v[1][1] != IN) {
+                    if ((j < n - 1) && (v[1][1] != IN)) {
                         t1 = shrink(v[1], v[1][1] + IN, OUT)
                         increment(D1, t1, v[0])
                     }
-                    if (v[1][1] != OUT) {
+                    if ((j < n - 1) && (v[1][1] != OUT)) {
                         t1 = shrink(v[1], v[1][1] + OUT, IN)
                         increment(D1, t1, v[0])
                     }
                 }
                 else if (v[1][0] == IN) {
-                    if (v[1][1] != IN) {
+                    if ((j < n - 1) && (v[1][1] != IN)) {
                         t1 = shrink(v[1], v[1][1] + IN, 0)
                         increment(D1, t1, v[0])
                     }
@@ -59,7 +60,7 @@ function euler_393(n) {
                     increment(D1, t1, v[0])
                 }
                 else if (v[1][0] == OUT) {
-                    if (v[1][1] != OUT) {
+                    if ((j < n - 1) && (v[1][1] != OUT)) {
                         t1 = shrink(v[1], v[1][1] + OUT, 0)
                         increment(D1, t1, v[0])
                     }
@@ -73,29 +74,7 @@ function euler_393(n) {
             }
             D = D1
         }
-
-        // Last row has only neighbor to the right
-        var D1 = {}
-        for each (var t,v in pairs(D)) {
-            var t1
-            if (v[1][0] == 0) {
-                // No continuation possible
-            }
-            else if (v[1][0] == IN) {
-                t1 = shrink(v[1], v[1][1], IN)
-                increment(D1, t1, v[0])
-            }
-            else if (v[1][0] == OUT) {
-                t1 = shrink(v[1], v[1][1], OUT)
-                increment(D1, t1, v[0])
-            }
-            else {
-                t1 = shrink(v[1], v[1][1], 0)
-                increment(D1, t1, v[0])
-            }
-        }
-        D = D1
     }
-    return D[ns][0]
+    return (D[ns] != null)? D[ns][0] : 0
 }
 print(euler_393(10))

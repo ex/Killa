@@ -109,7 +109,6 @@ for each (var element in list_iterator(t)) {
 }
 
 dofile('to_string.kia');
-dofile('decrypt.kia');
 
 // Sieve of Eratosthenes
 function primes(limit) {
