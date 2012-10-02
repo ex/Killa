@@ -1,5 +1,4 @@
 
-
 var x, y = "private x", "private y"
 public var x = ["asdasdad"]
 global.x.gg = "gg"
@@ -170,10 +169,6 @@ do {
     n += 1
 } while (n <= 20)
 
-//print($"0123456789")
-//print(${1,2,3,4,5,6})
-//print(${key:1,2,3,4,5})
-
 public var x = 10     // global variable
 {                     // new block
     var x = global.x  // new 'x', with value 10
@@ -215,15 +210,8 @@ var y = (true)? trueExpr(): falseExpr() // falseExpr is not called
 var x = (y < 6)? "less than 6" : (y % 2 == 0)? "even" : "odd"
 print(x) // Output: even
 
-
-var s1 = 'testing '
-s1 ..= "concatenation"
-print(s1) // prints: "testing concatenation"
-
-
 ////var mixed = {1, 3, name: "foo", ['new']: 234}  // mixed table constructor disallowed
 ////print(to_string(mixed))
-
 
 function getAverage(array) {
     var sum = 0
@@ -238,6 +226,5 @@ function getAverage(array) {
 }
 print(getAverage([10, 20, 40, 50])) 
 print(getAverage([]))
-
 
 //*/

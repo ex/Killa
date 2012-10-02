@@ -1,6 +1,6 @@
 
 // The text to decipher. It was created using a substitution cipher
-var text = [[
+var text = """
 Uid nx, aex jcdjipx iu wzux zp, ta wxtpa jtdaws, ai etkx vis.
 Dcos zyexdzaxr aex Jxdw jezwipijes iu etkzyg nidx aety iyx hts
 ai ri aex ptnx aezyg. Z zyexdzaxr aeta jezwipijes udin Wtdds Htww,
@@ -17,7 +17,7 @@ Z vcpa htya ai pts, "jdzya aezp!" Z riy'a htya tww aex pcddicyrzyg
 ntgzq fxshidrp. Z vcpa htya ai qiyqxyadtax iy aex atpf. Aeta'p aex otpzq
 zrxt. Pi Z etkx adzxr ai ntfx Dcos qirx qiyqzpx tyr pcqqzyqa.
 Scfzezdi Ntapcniai. (hhh.tdaznt.qin/zyak/dcos)
-]]
+"""
 
 // This is the frequency table of the language of the original text
 // (from more frequent to less frequent).

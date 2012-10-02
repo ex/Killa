@@ -251,24 +251,21 @@ static void read_numeral (killa_LexState *ls, killa_SemInfo *seminfo) {
 
 
 /*
-** skip a sequence '[=*[' or ']=*]' and return its number of '='s or
-** -1 if sequence is malformed
+** return the number of consecutive double quotes of length less or equal that 3
 */
-static int skip_sep (killa_LexState *ls) {
-  int count = 0;
-  int s = ls->current;
-  killa_assert(s == '[' || s == ']');
+static int count_doublequotes (killa_LexState *ls) {
+  int count = 1;
+  killa_assert(ls->current == '"');
   save_and_next(ls);
-  while (ls->current == '=') {
+  while (ls->current == '"' && (count < 3)) {
     save_and_next(ls);
     count++;
   }
-  return (ls->current == s) ? count : (-count) - 1;
+  return count;
 }
 
 
-static void read_long_string (killa_LexState *ls, killa_SemInfo *seminfo, int sep) {
-  save_and_next(ls);  /* skip 2nd `[' */
+static void read_long_string (killa_LexState *ls, killa_SemInfo *seminfo) {
   if (currIsNewline(ls))  /* string starts with a newline? */
     inclinenumber(ls);  /* skip it */
   for (;;) {
@@ -277,9 +274,8 @@ static void read_long_string (killa_LexState *ls, killa_SemInfo *seminfo, int se
         lexerror(ls, (seminfo) ? "unfinished long string" :
                                  "unfinished long comment", TK_EOS);
         break;  /* to avoid warnings */
-      case ']': {
-        if (skip_sep(ls) == sep) {
-          save_and_next(ls);  /* skip 2nd `]' */
+      case '"': {
+        if (count_doublequotes(ls) == 3) {
           goto endloop;
         }
         break;
@@ -297,8 +293,8 @@ static void read_long_string (killa_LexState *ls, killa_SemInfo *seminfo, int se
     }
   } endloop:
   if (seminfo)
-    seminfo->ts = killaX_newstring(ls, killaZ_buffer(ls->buff) + (2 + sep),
-                                     killaZ_bufflen(ls->buff) - 2*(2 + sep));
+    seminfo->ts = killaX_newstring(ls, killaZ_buffer(ls->buff) + 3,
+                                     killaZ_bufflen(ls->buff) - 6);
 }
 
 
@@ -341,7 +337,6 @@ static int readdecesc (killa_LexState *ls) {
 
 
 static void read_string (killa_LexState *ls, int del, killa_SemInfo *seminfo) {
-  save_and_next(ls);  /* keep delimiter (for error messages) */
   while (ls->current != del) {
     switch (ls->current) {
       case KILLA_EOZ:
@@ -451,14 +446,20 @@ static int llex (killa_LexState *ls, killa_SemInfo *seminfo) {
         }
         end_long_comment: break;
       }
-      case '[': {  /* long string or simply '[' */
-        int sep = skip_sep(ls);
-        if (sep >= 0) {
-          read_long_string(ls, seminfo, sep);
-          return TK_STRING;
+      case '"': {  /* multiline string or string */
+        int sep = count_doublequotes(ls);
+        if (sep == 3) {
+          read_long_string(ls, seminfo);
         }
-        else if (sep == -1) return '[';
-        else lexerror(ls, "invalid long string delimiter", TK_STRING);
+        else if (sep == 2) {
+          // empty string
+          seminfo->ts = killaX_newstring(ls, killaZ_buffer(ls->buff) + 1,
+                                         killaZ_bufflen(ls->buff) - 2);
+        }
+        else {
+          read_string(ls, '"', seminfo);
+        }
+        return TK_STRING;
       }
       case '+': {
         next(ls);
@@ -519,8 +520,9 @@ static int llex (killa_LexState *ls, killa_SemInfo *seminfo) {
         if (ls->current != ':') return ':';
         else { next(ls); return TK_DBCOLON; }
       }
-      case '"': case '\'': {  /* short literal strings */
-        read_string(ls, ls->current, seminfo);
+      case '\'': {  /* short literal strings */
+        save_and_next(ls);  /* keep delimiter (for error messages) */
+        read_string(ls, '\'', seminfo);
         return TK_STRING;
       }
       case '.': {  /* '.', '..', '...', or number */

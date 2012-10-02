@@ -279,6 +279,21 @@ assert(os.setlocale() == 'C')
 assert(os.setlocale(null, "numeric") == 'C')
 
 end
+*/
+
+var a=""""""
+assert(a=="")
+
+var ms = """
+This is a
+"multiline" string"""
+assert(ms=="This is a\n\"multiline\" string")
+
+var a = "";var b = ""
+assert(a == b)
+
+var s1 = 'testing '
+s1 ..= "concatenation"
+assert(s1 == "testing concatenation")
 
 print('OK')
-*/
