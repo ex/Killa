@@ -22,24 +22,6 @@
 	(killaL_checktype(L, n, KILLA_TTABLE), killaL_len(L, n))
 
 
-#if defined(KILLA_COMPAT_MAXN)
-static int maxn (killa_State *L) {
-  killa_Number max = 0;
-  killaL_checktype(L, 1, KILLA_TTABLE);
-  killa_pushnull(L);  /* first key */
-  while (killa_next(L, 1)) {
-    killa_pop(L, 1);  /* remove value */
-    if (killa_type(L, -1) == KILLA_TNUMBER) {
-      killa_Number v = killa_tonumber(L, -1);
-      if (v > max) max = v;
-    }
-  }
-  killa_pushnumber(L, max);
-  return 1;
-}
-#endif
-
-
 static int tinsert (killa_State *L) {
   int e = aux_getn(L, 1) + KILLA_BASE;  /* first empty element */
   int pos;  /* where to insert new element */
@@ -274,9 +256,6 @@ static int sort (killa_State *L) {
 
 static const killaL_Reg tab_funcs[] = {
   {"concat", tconcat},
-#if defined(KILLA_COMPAT_MAXN)
-  {"maxn", maxn},
-#endif
   {"insert", tinsert},
   {"pack", pack},
   {"unpack", unpack},

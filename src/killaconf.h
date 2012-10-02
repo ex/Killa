@@ -277,11 +277,6 @@
 #define KILLA_COMPAT_LOADSTRING
 
 /*
-@@ KILLA_COMPAT_MAXN defines the function 'maxn' in the table library.
-*/
-#define KILLA_COMPAT_MAXN
-
-/*
 @@ The following macros supply trivial compatibility for some
 ** changes in the API. The macros themselves document how to
 ** change your code to avoid using them.
