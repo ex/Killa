@@ -550,7 +550,7 @@ KILLALIB_API int killaL_ref (killa_State *L, int t) {
     killa_rawseti(L, t, freelist);  /* (t[freelist] = t[ref]) */
   }
   else  /* no free elements */
-    ref = (int)killa_rawlen(L, t) + 1;  /* get a new reference */
+    ref = (int)killa_rawlen(L, t) + KILLA_BASE;  /* get a new reference */
   killa_rawseti(L, t, ref);
   return ref;
 }
