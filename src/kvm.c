@@ -28,7 +28,7 @@
 #include "ktable.h"
 #include "ktm.h"
 #include "kvm.h"
-
+#include "kubit.h"
 
 
 /* limit for table tag-method chains (to avoid loops) */
@@ -421,6 +421,8 @@ void killaV_finishOp (killa_State *L) {
   switch (op) {  /* finish its execution */
     case OP_ADD: case OP_SUB: case OP_MUL: case OP_DIV:
     case OP_MOD: case OP_POW: case OP_UNM: case OP_LEN:
+    case OP_BAND: case OP_BOR: case OP_BXOR: case OP_BNOT: 
+    case OP_BLSH: case OP_BRSH: 
     case OP_GETTABUP: case OP_GETTABLE: case OP_SELF: {
       killa_setobjs2s(L, base + KILLA_GETARG_A(inst), --L->top);
       break;
@@ -624,6 +626,31 @@ void killaV_execute (killa_State *L) {
       )
       vmcase(OP_POW,
         arith_op(killai_numpow, TM_POW);
+      )
+      vmcase(OP_BAND,
+        arith_op(bit_and, TM_BAND);
+      )
+      vmcase(OP_BOR,
+        arith_op(bit_or, TM_BOR);
+      )
+      vmcase(OP_BXOR,
+        arith_op(bit_xor, TM_BXOR);
+      )
+      vmcase(OP_BLSH,
+        arith_op(bit_lshift, TM_BLSH);
+      )
+      vmcase(OP_BRSH,
+        arith_op(bit_rshift, TM_BRSH);
+      )
+      vmcase(OP_BNOT,
+        killa_TValue *rb = RB(i);
+        if (killa_ttisnumber(rb)) {
+          killa_Number nb = killa_nvalue(rb);
+          killa_setnvalue(ra,bit_not(L,nb));
+        }
+        else {
+          Protect(killaV_arith(L,ra,rb,rb, TM_BNOT));
+        }
       )
       vmcase(OP_UNM,
         killa_TValue *rb = RB(i);

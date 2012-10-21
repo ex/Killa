@@ -36,6 +36,12 @@ KILLAI_DDEF const char *const killaP_opnames[KILLA_NUM_OPCODES+1] = {
   "DIV",
   "MOD",
   "POW",
+  "BITAND",
+  "BITOR",
+  "BITXOR",
+  "BITLSH",
+  "BITRSH",
+  "BITNOT",
   "UNM",
   "NOT",
   "LEN",
@@ -84,6 +90,12 @@ KILLAI_DDEF const killa_ubyte killaP_opmodes[KILLA_NUM_OPCODES] = {
  ,opmode(0, 1, OpArgK, OpArgK, iABC)		/* OP_DIV */
  ,opmode(0, 1, OpArgK, OpArgK, iABC)		/* OP_MOD */
  ,opmode(0, 1, OpArgK, OpArgK, iABC)		/* OP_POW */
+ ,opmode(0, 1, OpArgK, OpArgK, iABC)        /* OP_BITAND */
+ ,opmode(0, 1, OpArgK, OpArgK, iABC)        /* OP_BITOR */
+ ,opmode(0, 1, OpArgK, OpArgK, iABC)        /* OP_BITXOR */
+ ,opmode(0, 1, OpArgK, OpArgK, iABC)        /* OP_BITLSH */
+ ,opmode(0, 1, OpArgK, OpArgK, iABC)        /* OP_BITRSH */
+ ,opmode(0, 1, OpArgR, OpArgN, iABC)        /* OP_BITNOT */
  ,opmode(0, 1, OpArgR, OpArgN, iABC)		/* OP_UNM */
  ,opmode(0, 1, OpArgR, OpArgN, iABC)		/* OP_NOT */
  ,opmode(0, 1, OpArgR, OpArgN, iABC)		/* OP_LEN */
@@ -104,6 +116,6 @@ KILLAI_DDEF const killa_ubyte killaP_opmodes[KILLA_NUM_OPCODES] = {
  ,opmode(0, 0, OpArgU, OpArgU, iABC)		/* OP_SETLIST */
  ,opmode(0, 1, OpArgU, OpArgN, iABx)		/* OP_CLOSURE */
  ,opmode(0, 1, OpArgU, OpArgN, iABC)		/* OP_VARARG */
- ,opmode(0, 0, OpArgU, OpArgU, iAx)		/* OP_EXTRAARG */
+ ,opmode(0, 0, OpArgU, OpArgU, iAx)		    /* OP_EXTRAARG */
 };
 

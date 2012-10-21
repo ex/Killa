@@ -736,7 +736,7 @@ static void codearith (killa_FuncState *fs, killa_OpCode op,
   if (constfolding(op, e1, e2))
     return;
   else {
-    int o2 = (op != OP_UNM && op != OP_LEN) ? killaK_exp2RK(fs, e2) : 0;
+    int o2 = (op != OP_UNM && op != OP_LEN && op != OP_BNOT) ? killaK_exp2RK(fs, e2) : 0;
     int o1 = killaK_exp2RK(fs, e1);
     if (o1 > o2) {
       freeexp(fs, e1);
@@ -788,6 +788,12 @@ void killaK_prefix (killa_FuncState *fs, killaK_UnOpr op, killa_expdesc *e, int 
       codearith(fs, OP_LEN, e, &e2, line);
       break;
     }
+    case OPR_BNOT: {
+      if (e->k == VK)
+        killaK_exp2anyreg(fs, e);  /* cannot operate on non-numeric constants */
+      codearith(fs, OP_BNOT, e, &e2, line);
+      break;
+    }
     default: killa_assert(0);
   }
 }
@@ -808,6 +814,8 @@ void killaK_infix (killa_FuncState *fs, killaK_BinOpr op, killa_expdesc *v) {
       break;
     }
     case OPR_ADD: case OPR_SUB: case OPR_MUL: case OPR_DIV:
+    case OPR_BAND: case OPR_BOR: case OPR_BXOR: 
+    case OPR_BLSH: case OPR_BRSH: 
     case OPR_MOD: case OPR_POW: {
       if (!isnumeral(v)) killaK_exp2RK(fs, v);
       break;
@@ -862,6 +870,12 @@ void killaK_posfix (killa_FuncState *fs, killaK_BinOpr op,
     }
     case OPR_NE: case OPR_GT: case OPR_GE: {
       codecomp(fs, killa_cast(killa_OpCode, op - OPR_NE + OP_EQ), 0, e1, e2);
+      break;
+    }
+    case OPR_BAND: case OPR_BOR: case OPR_BXOR: 
+    case OPR_BLSH: case OPR_BRSH: 
+    {
+      codearith(fs, killa_cast(killa_OpCode, op - OPR_BAND + OP_BAND), e1, e2, line);
       break;
     }
     default: killa_assert(0);

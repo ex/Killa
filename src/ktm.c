@@ -36,7 +36,10 @@ void killaT_init (killa_State *L) {
     "__index", "__newindex",
     "__gc", "__mode", "__len", "__eq",
     "__add", "__sub", "__mul", "__div", "__mod",
-    "__pow", "__unm", "__lt", "__le",
+    "__pow", 
+    "__bit_and", "__bit_or", "__bit_xor", 
+    "__bit_lsh", "__bit_rsh", "__bit_not",
+    "__unm", "__lt", "__le",
     "__concat", "__call"
   };
   int i;

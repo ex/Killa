@@ -46,9 +46,10 @@ static const char *const killaX_tokens [] = {
     "interface", "new", "override", "protected", "static",
     "super", "switch", "throw", "try", "undefined",
     /* other terminal symbols */
-    "!", "&&", "||", "**", "::", 
+    "&&", "||", "**", "::", 
     "..", "...", "==", ">=", "<=", "!=",
     "+=", "-=", "*=", "/=", "%=", "..=",
+    "<<", ">>",
     "<eof>", "<number>", "<name>", "<string>"
 };
 
@@ -492,17 +493,21 @@ static int llex (killa_LexState *ls, killa_SemInfo *seminfo) {
       }
       case '<': {
         next(ls);
-        if (ls->current != '=') return '<';
-        else { next(ls); return TK_LE; }
+        switch (ls->current) {
+          case '=': next(ls); return TK_LE; break;
+          case '<': next(ls); return TK_BLSH; break;
+          default: return '<'; }
       }
       case '>': {
         next(ls);
-        if (ls->current != '=') return '>';
-        else { next(ls); return TK_GE; }
+        switch (ls->current) {
+          case '=': next(ls); return TK_GE; break;
+          case '>': next(ls); return TK_BRSH; break;
+          default: return '>'; }
       }
       case '!': {
         next(ls);
-        if (ls->current != '=') return TK_NOT;
+        if (ls->current != '=') return '!';
         else { next(ls); return TK_NE; }
       }
       case '&': {

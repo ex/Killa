@@ -29,6 +29,7 @@
 */
 typedef enum killaK_BinOpr {
   OPR_ADD, OPR_SUB, OPR_MUL, OPR_DIV, OPR_MOD, OPR_POW,
+  OPR_BAND, OPR_BOR, OPR_BXOR, OPR_BLSH, OPR_BRSH, 
   OPR_CONCAT,
   OPR_EQ, OPR_LT, OPR_LE,
   OPR_NE, OPR_GT, OPR_GE,
@@ -37,7 +38,7 @@ typedef enum killaK_BinOpr {
 } killaK_BinOpr;
 
 
-typedef enum killaK_UnOpr { OPR_MINUS, OPR_NOT, OPR_LEN, OPR_NOUNOPR } killaK_UnOpr;
+typedef enum killaK_UnOpr { OPR_MINUS, OPR_NOT, OPR_LEN, OPR_BNOT, OPR_NOUNOPR } killaK_UnOpr;
 
 
 #define killaK_getcode(fs,e)	((fs)->f->code[(e)->u.info])

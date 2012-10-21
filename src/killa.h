@@ -205,7 +205,14 @@ KILLA_API const void     *(killa_topointer) (killa_State *L, int idx);
 #define KILLA_OPDIV     3
 #define KILLA_OPMOD     4
 #define KILLA_OPPOW     5
-#define KILLA_OPUNM     6
+#define KILLA_OPBAND	6
+#define KILLA_OPBOR	    7
+#define KILLA_OPBXOR	8
+#define KILLA_OPBLSH	9
+#define KILLA_OPBRSH	10
+#define KILLA_OPBNOT	11
+#define KILLA_OPUNM	    12
+
 
 KILLA_API void  (killa_arith) (killa_State *L, int op);
 

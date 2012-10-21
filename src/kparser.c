@@ -1052,9 +1052,10 @@ static void simpleexp (killa_LexState *ls, killa_expdesc *v) {
 
 static killaK_UnOpr getunopr (int op) {
   switch (op) {
-    case TK_NOT: return OPR_NOT;
+    case '!': return OPR_NOT;
     case '-': return OPR_MINUS;
     case '$': return OPR_LEN;
+    case '~': return OPR_BNOT;
     default: return OPR_NOUNOPR;
   }
 }
@@ -1083,6 +1084,11 @@ static killaK_BinOpr getbinopr (int op) {
     case TK_CDIV: return OPR_DIV;
     case TK_CMOD: return OPR_MOD;
     case TK_CCONCAT: return OPR_CONCAT;
+    case '&': return OPR_BAND;
+    case '|': return OPR_BOR;
+    case '^': return OPR_BXOR;
+    case TK_BLSH: return OPR_BLSH;
+    case TK_BRSH: return OPR_BRSH;
     default: return OPR_NOBINOPR;
   }
 }
@@ -1093,7 +1099,10 @@ static const struct {
   killa_ubyte right; /* right priority */
 } priority[] = {  /* ORDER OPR */
    {6, 6}, {6, 6}, {7, 7}, {7, 7}, {7, 7},  /* `+' `-' `*' `/' `%' */
-   {10, 9}, {5, 4},                 /* **, .. (right associative) */
+   {10, 9},                         /* ** (right associative) */
+   {7,7}, {5,5}, {6,6},             /* bitwise and/or/xor */
+   {10,9}, {10,9},                  /* bitwise lsh/rsh */
+   {5, 4},                          /* .. (right associative) */
    {3, 3}, {3, 3}, {3, 3},          /* ==, <, <= */
    {3, 3}, {3, 3}, {3, 3},          /* !=, >, >= */
    {2, 2}, {1, 1}                   /* &&, || */
@@ -1106,7 +1115,7 @@ static const struct {
 ** subexpr -> (simpleexp | unop subexpr) { binop subexpr }
 ** where `binop' is any binary operator with a priority higher than `limit'
 */
-static killaK_BinOpr subexpr (killa_LexState *ls, killa_expdesc *v, int limit) {
+static killaK_BinOpr subexpr (killa_LexState *ls, killa_expdesc *v, unsigned int limit) {
   killaK_BinOpr op;
   killaK_UnOpr uop;
   enterlevel(ls);

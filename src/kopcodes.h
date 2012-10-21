@@ -194,6 +194,14 @@ OP_MUL,/*	A B C	R(A) := RK(B) * RK(C)				*/
 OP_DIV,/*	A B C	R(A) := RK(B) / RK(C)				*/
 OP_MOD,/*	A B C	R(A) := RK(B) % RK(C)				*/
 OP_POW,/*	A B C	R(A) := RK(B) ^ RK(C)				*/
+
+OP_BAND,/*  A B C   R(A) := RK(B) & RK(C)               */
+OP_BOR,/*   A B C   R(A) := RK(B) | RK(C)               */
+OP_BXOR,/*  A B C   R(A) := RK(B) ^^ RK(C)              */
+OP_BLSH,/*  A B C   R(A) := RK(B) << RK(C)              */
+OP_BRSH,/*  A B C   R(A) := RK(B) >> RK(C)              */
+OP_BNOT,/*   A B C   R(A) := ~RK(B)                      */
+
 OP_UNM,/*	A B	R(A) := -R(B)					*/
 OP_NOT,/*	A B	R(A) := not R(B)				*/
 OP_LEN,/*	A B	R(A) := length of R(B)				*/

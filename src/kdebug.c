@@ -459,6 +459,12 @@ static const char *getfuncname (killa_State *L, killa_CallInfo *ci, const char *
     case OP_LT: tm = TM_LT; break;
     case OP_LE: tm = TM_LE; break;
     case OP_CONCAT: tm = TM_CONCAT; break;
+    case OP_BAND: tm = TM_BAND; break;
+    case OP_BOR:  tm = TM_BOR; break;
+    case OP_BXOR: tm = TM_BXOR; break;
+    case OP_BLSH: tm = TM_BLSH; break;
+    case OP_BRSH: tm = TM_BRSH; break;
+    case OP_BNOT: tm = TM_BNOT; break;
     default:
       return NULL;  /* else no useful name can be found */
   }

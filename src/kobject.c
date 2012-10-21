@@ -26,7 +26,7 @@
 #include "kstate.h"
 #include "kstring.h"
 #include "kvm.h"
-
+#include "kubit.h"
 
 
 KILLAI_DDEF const killa_TValue killaO_nilobject_ = {KILLA_NILCONSTANT};
@@ -76,13 +76,19 @@ int killaO_ceillog2 (unsigned int x) {
 
 killa_Number killaO_arith (int op, killa_Number v1, killa_Number v2) {
   switch (op) {
-    case KILLA_OPADD: return killai_numadd(NULL, v1, v2);
-    case KILLA_OPSUB: return killai_numsub(NULL, v1, v2);
-    case KILLA_OPMUL: return killai_nummul(NULL, v1, v2);
-    case KILLA_OPDIV: return killai_numdiv(NULL, v1, v2);
-    case KILLA_OPMOD: return killai_nummod(NULL, v1, v2);
-    case KILLA_OPPOW: return killai_numpow(NULL, v1, v2);
-    case KILLA_OPUNM: return killai_numunm(NULL, v1);
+    case KILLA_OPADD:  return killai_numadd(NULL, v1, v2);
+    case KILLA_OPSUB:  return killai_numsub(NULL, v1, v2);
+    case KILLA_OPMUL:  return killai_nummul(NULL, v1, v2);
+    case KILLA_OPDIV:  return killai_numdiv(NULL, v1, v2);
+    case KILLA_OPMOD:  return killai_nummod(NULL, v1, v2);
+    case KILLA_OPPOW:  return killai_numpow(NULL, v1, v2);
+    case KILLA_OPUNM:  return killai_numunm(NULL, v1);
+    case KILLA_OPBAND: return bit_and(NULL,v1,v2);
+    case KILLA_OPBOR:  return bit_or(NULL,v1,v2);
+    case KILLA_OPBXOR: return bit_xor(NULL,v1,v2);
+    case KILLA_OPBLSH: return bit_lshift(NULL,v1,v2);
+    case KILLA_OPBRSH: return bit_rshift(NULL,v1,v2);
+    case KILLA_OPBNOT: return bit_not(NULL,v1);
     default: killa_assert(0); return 0;
   }
 }
