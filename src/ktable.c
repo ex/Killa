@@ -212,7 +212,7 @@ static int computesizes (int nums[], int *narray) {
 
 static int countint (const killa_TValue *key, int *nums) {
   int k = arrayindex(key);
-  if ((0 < k + 1 - KILLA_BASE) && (k <= MAXASIZE + 1 - KILLA_BASE)) {  /* is `key' an appropriate array index? */
+  if ((0 < k + 1 - KILLA_BASE) && (k + 1 - KILLA_BASE <= MAXASIZE)) {  /* is `key' an appropriate array index? */
     nums[killaO_ceillog2(k + 1 - KILLA_BASE)]++;  /* count as such */
     return 1;
   }
