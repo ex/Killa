@@ -5,76 +5,102 @@ var one = (USE_BC)? require("bc").number(1) : 1
 var IN = 1
 var OUT = 2
 
-function shrink(t, start, end) {
-    var out = [start]
-    var insert = global.table.insert
-    for each (var k = 2 to $t - 1) {
-        insert(out, t[k])
+// Insert board to state.
+// If the board is already present just increase the board counter.
+// Board data is stored as: [boardCount, boardArray]
+function insertBoard(state, boardArray, boardCount) {
+    var boardKey = table.concat(boardArray, ',')
+    if (state[boardKey] == null) {
+        state[boardKey] = [boardCount, boardArray]
     }
-    insert(out, end)
+    else {
+        state[boardKey][0] = state[boardKey][0] + boardCount
+    }
+}
+
+function clone(t) {
+    var out = []
+    for (var k = 0; k < $t; k += 1) {
+        out[k] = t[k]
+    }
     return out
 }
 
-function increment(t, key, inc) {
-    var ks = table.concat(key, ',')
-    if (t[ks] == null) {
-        t[ks] = [inc, key]
-    }
-    else {
-        t[ks][0] = t[ks][0] + inc
-    }
-}
-
 function euler_393(n) {
-    var noarrow = [one, []]
+    // Initial board has no ants moving IN or OUT (all zero)
+    var initBoard = []
     for (var k = 0; k < n; k += 1) {
-        table.insert(noarrow[1], 0)
+        initBoard[k] = 0
     }
-    var ns = table.concat(noarrow[1], ',')
-    var D = {ns: noarrow}
-    var D1
-    var t1
+
+    // Initial state contains only the initial board
+    var state = {}
+    var init = table.concat(initBoard, ',')
+
+    // We are going to use a data type: [counter, board] for storing boards
+    state[init] = [one, initBoard];
 
     // Columns
-    for (var i = 0; i < n; i += 1) {
+    for each (var col = 0 to n - 1) {
         // Rows
-        for (var j = 0; j < n; j += 1) {
-            D1 = {}
-            for each (var t,v in pairs(D)) {
-                if (v[1][0] == 0) {
-                    if ((j < n - 1) && (v[1][1] != IN)) {
-                        t1 = shrink(v[1], v[1][1] + IN, OUT)
-                        increment(D1, t1, v[0])
-                    }
-                    if ((j < n - 1) && (v[1][1] != OUT)) {
-                        t1 = shrink(v[1], v[1][1] + OUT, IN)
-                        increment(D1, t1, v[0])
+        for each (var row = 0 to n - 1) {
+            var newState = {}
+            var newBoard
+            for each (var _,data in pairs(state)) {
+                var boardCount = data[0]
+                var board = data[1]
+                if (board[row] == 0) {
+                    if ((row < n - 1) && (col < n - 1)) {
+                        if (board[row + 1] != IN) {
+                            newBoard = clone(board) 
+                            newBoard[row] = OUT
+                            newBoard[row + 1] = newBoard[row + 1] + IN
+                            insertBoard(newState, newBoard, boardCount)
+                        }
+                        if (board[row + 1] != OUT) {
+                            newBoard = clone(board)
+                            newBoard[row] = IN
+                            newBoard[row + 1] = newBoard[row + 1] + OUT
+                            insertBoard(newState, newBoard, boardCount)
+                        }
                     }
                 }
-                else if (v[1][0] == IN) {
-                    if ((j < n - 1) && (v[1][1] != IN)) {
-                        t1 = shrink(v[1], v[1][1] + IN, 0)
-                        increment(D1, t1, v[0])
+                else if (board[row] == IN) {
+                    if ((row < n - 1) && (board[row + 1] != IN)) {
+                        newBoard = clone(board)
+                        newBoard[row] = 0
+                        newBoard[row + 1] = newBoard[row + 1] + IN
+                        insertBoard(newState, newBoard, boardCount)
                     }
-                    t1 = shrink(v[1], v[1][1], IN)
-                    increment(D1, t1, v[0])
-                }
-                else if (v[1][0] == OUT) {
-                    if ((j < n - 1) && (v[1][1] != OUT)) {
-                        t1 = shrink(v[1], v[1][1] + OUT, 0)
-                        increment(D1, t1, v[0])
+                    if (col < n - 1) {
+                        insertBoard(newState, board, boardCount)
                     }
-                    t1 = shrink(v[1], v[1][1], OUT)
-                    increment(D1, t1, v[0])
                 }
-                else { // v[1][0] == IN + OUT
-                    t1 = shrink(v[1], v[1][1], 0)
-                    increment(D1, t1, v[0])
+                else if (board[row] == OUT) {
+                    if ((row < n - 1) && (board[row + 1] != OUT)) {
+                        newBoard = clone(board)
+                        newBoard[row] = 0
+                        newBoard[row + 1] = newBoard[row + 1] + OUT
+                        insertBoard(newState, newBoard, boardCount)
+                    }
+                    if (col < n - 1) {
+                        insertBoard(newState, board, boardCount)
+                    }
+                }
+                else {
+                    // board[row] == IN + OUT
+                    newBoard = clone(board)
+                    newBoard[row] = 0
+                    insertBoard(newState, newBoard, boardCount)
                 }
             }
-            D = D1
+            state = newState
         }
     }
-    return (D[ns] != null)? D[ns][0] : 0
+    return (state[init] != null)? state[init][0] : 0
 }
+
+var tm = os.clock()
 print(euler_393(10))
+print("Time: ", os.clock() - tm) 
+

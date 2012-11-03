@@ -1,20 +1,18 @@
 
-function table_print(tt, indent, done) {
+function table_print(tt, done) {
     done = done || {}
-    indent = indent || 0
     if (type(tt) == "table") {
         var sb = {}
         for each (var key, value in pairs(tt)) {
-            table.insert(sb, string.rep(" ", indent)) // indent it
-            if (type(value) == "table" && ! done[value]) {
-                done[value] = true
-                table.insert(sb, "{\n");
-                table.insert(sb, table_print(value, indent + 2, done))
-                table.insert(sb, string.rep(" ", indent)) // indent it
-                table.insert(sb, "}\n");
+            if ("number" == type(key)) {
+                table.insert(sb, string.format("%s, ", to_string(value, done)))
             }
-            else if ("number" == type(key)) {
-                table.insert(sb, string.format("%s ", tostring(value)))
+            else if (type(value) == "table" && !done[value]) {
+                done[value] = true
+                table.insert(sb, to_string(key));
+                table.insert(sb, ": ");
+                table.insert(sb, table_print(value, done))
+                table.insert(sb, "; ");
             }
             else {
                 table.insert(sb, string.format("%s: %s; ",
@@ -25,7 +23,7 @@ function table_print(tt, indent, done) {
         return '{'..table.concat(sb)..'}'
     }
     else {
-        return tt .. "\n"
+        return tt
     }
 }
 
@@ -37,7 +35,7 @@ public function to_string(tbl) {
         return table_print(tbl)
     }
     else if ("string" == type(tbl)) {
-        return tbl
+        return '"'..tbl..'"'
     }
     else {
         return tostring(tbl)
