@@ -40,7 +40,8 @@ void killaT_init (killa_State *L) {
     "__bit_and", "__bit_or", "__bit_xor", 
     "__bit_lsh", "__bit_rsh", "__bit_not",
     "__unm", "__lt", "__le",
-    "__concat", "__call"
+    "__concat", "__call",
+    "__cadd", "__csub", "__cmul", "__cdiv", "__cmod", "__cconcat"
   };
   int i;
   for (i=0; i<TM_N; i++) {

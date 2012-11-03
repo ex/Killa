@@ -753,8 +753,8 @@ static void codearith (killa_FuncState *fs, killa_OpCode op,
 }
 
 
-static void codecomp (killa_FuncState *fs, killa_OpCode op, int cond, killa_expdesc *e1,
-                                                          killa_expdesc *e2) {
+static void codecomp (killa_FuncState *fs, killa_OpCode op, int cond,
+                      killa_expdesc *e1, killa_expdesc *e2) {
   int o1 = killaK_exp2RK(fs, e1);
   int o2 = killaK_exp2RK(fs, e2);
   freeexp(fs, e2);
@@ -766,6 +766,60 @@ static void codecomp (killa_FuncState *fs, killa_OpCode op, int cond, killa_expd
   }
   e1->u.info = condjump(fs, op, cond, o1, o2);
   e1->k = VJMP;
+}
+
+
+static void codecompound (killa_FuncState *fs, killa_OpCode op, 
+                          killa_expdesc *e1, killa_expdesc *e2) {
+  int o1;
+  int o2;
+
+  /* load expresion 2 into a register. */
+  o2 = killaK_exp2RK(fs, e2);
+
+  switch (e1->k) {
+    case VLOCAL: {
+      /* compound opcode */
+      killaK_codeABC(fs, op, e1->u.info, o2, 0);
+      return;
+    }
+    case VUPVAL: {
+      /* allocate temp. register */
+      o1 = fs->freereg;
+      killaK_reserveregs(fs, 1);
+      /* load upval into temp. register */
+      killaK_codeABC(fs, OP_GETUPVAL, o1, e1->u.info, 0);
+      /* compound opcode */
+      killaK_codeABC(fs, op, o1, o2, 0);
+      /* store results back to upval */
+      killaK_codeABC(fs, OP_SETUPVAL, o1, e1->u.info, 0);
+      /* free temp. register */
+      freereg(fs, o1);
+      break;
+    }
+    case VINDEXED: {
+      /* allocate temp. register */
+      o1 = fs->freereg;
+      killaK_reserveregs(fs, 1);
+      /* load indexed value into temp. register */
+      killaK_codeABC(fs, OP_GETTABLE, o1, e1->u.ind.t, e1->u.ind.idx);
+      /* compound opcode */
+      killaK_codeABC(fs, op, o1, o2, 0);
+      /* store results back to indexed value */
+      killaK_codeABC(fs, OP_SETTABLE, e1->u.ind.t, e1->u.ind.idx, o1);
+      /* free temp. register */
+      freereg(fs, o1);
+      freereg(fs, e1->u.ind.idx);
+      freereg(fs, e1->u.ind.t);
+      break;
+    }
+    default: {
+      killa_assert(0); /* invalid var kind to store */
+      break;
+    }
+  }
+  /* free register for expression 2 */
+  freeexp(fs, e2);
 }
 
 
@@ -873,9 +927,13 @@ void killaK_posfix (killa_FuncState *fs, killaK_BinOpr op,
       break;
     }
     case OPR_BAND: case OPR_BOR: case OPR_BXOR: 
-    case OPR_BLSH: case OPR_BRSH: 
-    {
+    case OPR_BLSH: case OPR_BRSH: {
       codearith(fs, killa_cast(killa_OpCode, op - OPR_BAND + OP_BAND), e1, e2, line);
+      break;
+    }
+    case OPR_CADD: case OPR_CSUB: case OPR_CMUL:
+    case OPR_CDIV: case OPR_CMOD: {
+      codecompound(fs, killa_cast(killa_OpCode, op - OPR_CADD + OP_CADD), e1, e2);
       break;
     }
     default: killa_assert(0);

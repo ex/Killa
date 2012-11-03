@@ -229,9 +229,16 @@ OP_TFORLOOP,/*	A sBx	if R(A+1) ~= nil then { R(A)=R(A+1); pc += sBx }*/
 
 OP_SETLIST,/*	A B C	R(A)[(C-1)*FPF+i] := R(A+i), 1 <= i <= B	*/
 
-OP_CLOSURE,/*	A Bx	R(A) := closure(KPROTO[Bx])			*/
+OP_CLOSURE,/*	A Bx	R(A) := closure(KPROTO[Bx])         */
 
-OP_VARARG,/*	A B	R(A), R(A+1), ..., R(A+B-2) = vararg		*/
+OP_VARARG,/*	A B	R(A), R(A+1), ..., R(A+B-2) = vararg    */
+
+OP_CADD,/*	A B R(A) := R(A) + RK(B)        */
+OP_CSUB,/*	A B R(A) := R(A) - RK(B)        */
+OP_CMUL,/*	A B R(A) := R(A) * RK(B)        */
+OP_CDIV,/*	A B R(A) := R(A) / RK(B)        */
+OP_CMOD,/*	A B R(A) := R(A) % RK(B)        */
+OP_CCONCAT,/*	A B R(A) := R(A) .. RK(B)   */
 
 OP_EXTRAARG/*	Ax	extra (larger) argument for previous opcode	*/
 } killa_OpCode;

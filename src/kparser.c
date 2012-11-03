@@ -1078,11 +1078,6 @@ static killaK_BinOpr getbinopr (int op) {
     case TK_GE: return OPR_GE;
     case TK_AND: return OPR_AND;
     case TK_OR: return OPR_OR;
-    case TK_CADD: return OPR_ADD;
-    case TK_CSUB: return OPR_SUB;
-    case TK_CMUL: return OPR_MUL;
-    case TK_CDIV: return OPR_DIV;
-    case TK_CMOD: return OPR_MOD;
     case TK_CCONCAT: return OPR_CONCAT;
     case '&': return OPR_BAND;
     case '|': return OPR_BOR;
@@ -1233,7 +1228,7 @@ static void check_conflict (killa_LexState *ls, struct LHS_assign *lh, killa_exp
 static void assignment (killa_LexState *ls, struct LHS_assign *lh, int nvars) {
   killa_expdesc e;
   check_condition(ls, killa_vkisvar(lh->v.k), "syntax error");
-  if (testnext(ls, ',')) {  /* assignment -> `,' primaryexp assignment */
+  if (testnext(ls, ',')) {  /* assignment -> ',' primaryexp assignment */
     struct LHS_assign nv;
     nv.prev = lh;
     primaryexp(ls, &nv.v);
@@ -1243,22 +1238,22 @@ static void assignment (killa_LexState *ls, struct LHS_assign *lh, int nvars) {
                     "C levels");
     assignment(ls, &nv, nvars+1);
   }
-  else if (ls->t.token != '=') {  /* assignment operator? */
+  else if (ls->t.token == TK_CCONCAT) {  /* ..= operator? */
     int line = ls->linenumber;
     e = lh->v;
     assignoperator(ls, &e);
     if ((ls->t.token == ',') || (nvars != 1)) {
       const char *msg = killaO_pushfstring(ls->L,
-          "assignment operator used with multiple expresions at line %d", line);
+          "..= operator used with multiple expresions at line %d", line);
       semerror(ls, msg);
     }
     killaK_setoneret(ls->fs, &e);  /* close last expression */
     killaK_storevar(ls->fs, &lh->v, &e);
     return;  /* avoid default */
   }
-  else {  /* assignment -> `=' explist */
+  else {  /* assignment -> '=' explist */
     int nexps;
-    checknext(ls, '=');
+    killaX_next(ls); /* consume '=' token. */
     nexps = explist(ls, &e);
     if (nexps != nvars) {
       adjust_assign(ls, nvars, nexps, &e);
@@ -1273,6 +1268,34 @@ static void assignment (killa_LexState *ls, struct LHS_assign *lh, int nvars) {
   }
   init_exp(&e, VNONRELOC, ls->fs->freereg-1);  /* default assignment */
   killaK_storevar(ls->fs, &lh->v, &e);
+}
+
+
+static killaK_BinOpr getcompopr (int op) {
+  switch (op) {
+    case TK_CADD: return OPR_CADD;
+    case TK_CSUB: return OPR_CSUB;
+    case TK_CMUL: return OPR_CMUL;
+    case TK_CDIV: return OPR_CDIV;
+    case TK_CMOD: return OPR_CMOD;
+    case TK_CCONCAT: return OPR_CCONCAT;
+    default: return OPR_NOBINOPR;
+  }
+}
+
+
+static void compound (killa_LexState *ls, struct LHS_assign *lh) {
+  killa_expdesc rh;
+  int nexps;
+  killaK_BinOpr op;
+  check_condition(ls, VLOCAL <= lh->v.k && lh->v.k <= VINDEXED, "syntax error");
+  /* parse compound operation. */
+  op = getcompopr(ls->t.token);
+  killaX_next(ls);
+  /* parse right-hand expression */
+  nexps = explist(ls, &rh);
+  check_condition(ls, nexps == 1, "syntax error");
+  killaK_posfix(ls->fs, op, &(lh->v), &rh, ls->linenumber);
 }
 
 
@@ -1682,7 +1705,7 @@ static void funcstat (killa_LexState *ls, int line, int isglobal) {
 
 
 static void exprstat (killa_LexState *ls) {
-  /* stat -> label | func | assignment */
+  /* stat -> label | func | compound | assignment */
   killa_FuncState *fs = ls->fs;
   struct LHS_assign v;
   if (ls->t.token == TK_NAME) {
@@ -1695,9 +1718,21 @@ static void exprstat (killa_LexState *ls) {
   primaryexp(ls, &v.v);
   if (v.v.k == VCALL)  /* stat -> func */
     KILLA_SETARG_C(killaK_getcode(fs, &v.v), 1);  /* call statement uses no results */
-  else {  /* stat -> assignment */
+  else {  /* stat -> compound | assignment */
     v.prev = NULL;
-    assignment(ls, &v, 1);
+    switch(ls->t.token) {
+      case TK_CADD: case TK_CSUB: case TK_CMUL:
+      case TK_CDIV: case TK_CMOD:
+        compound(ls, &v);
+        break;
+      case ',': case '=': case TK_CCONCAT:
+        assignment(ls, &v, 1);
+        break;
+      default:
+        killaX_syntaxerror(ls, killaO_pushfstring(ls->L,
+                         "'+=', '-=', '*=', '/=', '%=', '..=' or '=' expected"));
+        break;
+    }
   }
 }
 

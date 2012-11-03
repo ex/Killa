@@ -43,6 +43,12 @@ typedef enum {
   TM_LE,
   TM_CONCAT,
   TM_CALL,
+  TM_CADD,
+  TM_CSUB,
+  TM_CMUL,
+  TM_CDIV,
+  TM_CMOD,
+  TM_CCONCAT,
   TM_N		/* number of elements in the enum */
 } KILLA_TMS;
 

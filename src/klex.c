@@ -530,7 +530,7 @@ static int llex (killa_LexState *ls, killa_SemInfo *seminfo) {
         read_string(ls, '\'', seminfo);
         return TK_STRING;
       }
-      case '.': {  /* '.', '..', '...', or number */
+      case '.': {  /* '.', '..', '..=', '...', or number */
         save_and_next(ls);
         if (check_next(ls, ".")) {
           if (check_next(ls, "."))
@@ -538,7 +538,7 @@ static int llex (killa_LexState *ls, killa_SemInfo *seminfo) {
           else
               if (ls->current == '=') {
                 next(ls);
-                return TK_CCONCAT;
+                return TK_CCONCAT;  /* '..=' */
               }
               else 
                 return TK_CONCAT;   /* '..' */

@@ -178,6 +178,15 @@ static int call_binTM (killa_State *L, const killa_TValue *p1, const killa_TValu
 }
 
 
+static int call_compTM (killa_State *L, const killa_TValue *p1, const killa_TValue *p2,
+                        killa_StkId res, KILLA_TMS event) {
+  const killa_TValue *tm = killaT_gettmbyobj(L, p1, event);  /* try first operand */
+  if (killa_ttisnil(tm)) return 0;
+  callTM(L, tm, p1, p2, res, 1);
+  return 1;
+}
+
+
 static const killa_TValue *get_equalTM (killa_State *L, killa_Table *mt1, killa_Table *mt2,
                                   KILLA_TMS event) {
   const killa_TValue *tm1 = killa_fasttm(L, mt1, event);
@@ -365,6 +374,27 @@ void killaV_arith (killa_State *L, killa_StkId ra, const killa_TValue *rb,
 }
 
 
+static void compound (killa_State *L, killa_StkId ra, const killa_TValue *rb, KILLA_TMS op) {
+  killa_TValue tempa;
+  killa_TValue tempb;
+  const killa_TValue *a, *b;
+  if ((a = killaV_tonumber(ra, &tempa)) != NULL &&
+      (b = killaV_tonumber(rb, &tempb)) != NULL) {
+    killa_Number na = killa_nvalue(a), nb = killa_nvalue(b);
+    switch (op) {
+      case TM_CADD: killa_setnvalue(ra, killai_numadd(L, na, nb)); break;
+      case TM_CSUB: killa_setnvalue(ra, killai_numsub(L, na, nb)); break;
+      case TM_CMUL: killa_setnvalue(ra, killai_nummul(L, na, nb)); break;
+      case TM_CDIV: killa_setnvalue(ra, killai_numdiv(L, na, nb)); break;
+      case TM_CMOD: killa_setnvalue(ra, killai_nummod(L, na, nb)); break;
+      default: killa_assert(0); break;
+    }
+  }
+  else if (!call_compTM(L, ra, rb, ra, op))
+    killaG_aritherror(L, ra, rb);
+}
+
+
 /*
 ** check whether cached closure in prototype 'p' may be reused, that is,
 ** whether there is a cached closure with the same upvalues needed by
@@ -516,6 +546,17 @@ void killaV_finishOp (killa_State *L) {
           killa_setnvalue(ra, op(L, nb, nc)); \
         } \
         else { Protect(killaV_arith(L, ra, rb, rc, tm)); } }
+
+
+#define compound_op(L,op,tm) { \
+        killa_TValue *rb = RKB(i); \
+        if (killa_ttisnumber(ra) && killa_ttisnumber(rb)) { \
+          killa_Number na = killa_nvalue(ra), nb = killa_nvalue(rb); \
+          killa_setnvalue(ra, op(L, na, nb)); \
+        } \
+        else \
+          Protect(compound(L, ra, rb, tm)); \
+      }
 
 
 #define vmdispatch(o)	switch(o)
@@ -887,6 +928,21 @@ void killaV_execute (killa_State *L) {
       )
       vmcase(OP_EXTRAARG,
         killa_assert(0);
+      )
+      vmcase(OP_CADD,
+        compound_op(L, killai_numadd, TM_CADD);
+      )
+      vmcase(OP_CSUB,
+        compound_op(L, killai_numsub, TM_CSUB);
+      )
+      vmcase(OP_CMUL,
+        compound_op(L, killai_nummul, TM_CMUL);
+      )
+      vmcase(OP_CDIV,
+        compound_op(L, killai_numdiv, TM_CDIV);
+      )
+      vmcase(OP_CMOD,
+        compound_op(L, killai_nummod, TM_CMOD);
       )
     }
   }

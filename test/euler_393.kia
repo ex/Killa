@@ -14,7 +14,7 @@ function insertBoard(state, boardArray, boardCount) {
         state[boardKey] = [boardCount, boardArray]
     }
     else {
-        state[boardKey][0] = state[boardKey][0] + boardCount
+        state[boardKey][0] += boardCount
     }
 }
 
@@ -41,9 +41,9 @@ function euler_393(n) {
     state[init] = [one, initBoard];
 
     // Columns
-    for each (var col = 0 to n - 1) {
+    for (var col = 0; col < n; col += 1) {
         // Rows
-        for each (var row = 0 to n - 1) {
+        for (var row = 0; row < n; row += 1) {
             var newState = {}
             var newBoard
             for each (var _,data in pairs(state)) {
@@ -54,13 +54,13 @@ function euler_393(n) {
                         if (board[row + 1] != IN) {
                             newBoard = clone(board) 
                             newBoard[row] = OUT
-                            newBoard[row + 1] = newBoard[row + 1] + IN
+                            newBoard[row + 1] += IN
                             insertBoard(newState, newBoard, boardCount)
                         }
                         if (board[row + 1] != OUT) {
                             newBoard = clone(board)
                             newBoard[row] = IN
-                            newBoard[row + 1] = newBoard[row + 1] + OUT
+                            newBoard[row + 1] += OUT
                             insertBoard(newState, newBoard, boardCount)
                         }
                     }
@@ -69,7 +69,7 @@ function euler_393(n) {
                     if ((row < n - 1) && (board[row + 1] != IN)) {
                         newBoard = clone(board)
                         newBoard[row] = 0
-                        newBoard[row + 1] = newBoard[row + 1] + IN
+                        newBoard[row + 1] += IN
                         insertBoard(newState, newBoard, boardCount)
                     }
                     if (col < n - 1) {
@@ -80,7 +80,7 @@ function euler_393(n) {
                     if ((row < n - 1) && (board[row + 1] != OUT)) {
                         newBoard = clone(board)
                         newBoard[row] = 0
-                        newBoard[row + 1] = newBoard[row + 1] + OUT
+                        newBoard[row + 1] += OUT
                         insertBoard(newState, newBoard, boardCount)
                     }
                     if (col < n - 1) {

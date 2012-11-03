@@ -34,6 +34,7 @@ typedef enum killaK_BinOpr {
   OPR_EQ, OPR_LT, OPR_LE,
   OPR_NE, OPR_GT, OPR_GE,
   OPR_AND, OPR_OR,
+  OPR_CADD, OPR_CSUB, OPR_CMUL, OPR_CDIV, OPR_CMOD, OPR_CCONCAT,
   OPR_NOBINOPR
 } killaK_BinOpr;
 

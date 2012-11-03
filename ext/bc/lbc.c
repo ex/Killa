@@ -270,17 +270,22 @@ static int Bsqrt(lua_State *L)			/** sqrt(x) */
 
 static const luaL_Reg R[] =
 {
-	{ "__add",	Badd	},		/** __add(x,y) */
-	{ "__div",	Bdiv	},		/** __div(x,y) */
-	{ "__eq",	Beq	},		/** __eq(x,y) */
+	{ "__add",	Badd	},      /** __add(x,y) */
+	{ "__cadd",	Badd	},      /** __cadd(y) */
+	{ "__div",	Bdiv	},      /** __div(x,y) */
+	{ "__cdiv",	Bdiv	},      /** __cdiv(x,y) */
+	{ "__eq",	Beq	},          /** __eq(x,y) */
 	{ "__gc",	Bgc	},
-	{ "__lt",	Blt	},		/** __lt(x,y) */
-	{ "__mod",	Bmod	},		/** __mod(x,y) */
-	{ "__mul",	Bmul	},		/** __mul(x,y) */
-	{ "__pow",	Bpow	},		/** __pow(x,y) */
-	{ "__sub",	Bsub	},		/** __sub(x,y) */
-	{ "__tostring",	Btostring},		/** __tostring(x) */
-	{ "__unm",	Bneg	},		/** __unm(x) */
+	{ "__lt",	Blt	},          /** __lt(x,y) */
+	{ "__mod",	Bmod	},      /** __mod(x,y) */
+	{ "__cmod",	Bmod	},      /** __cmod(x,y) */
+	{ "__mul",	Bmul	},      /** __mul(x,y) */
+	{ "__cmul",	Bmul	},      /** __cmul(x,y) */
+	{ "__pow",	Bpow	},      /** __pow(x,y) */
+	{ "__sub",	Bsub	},      /** __sub(x,y) */
+	{ "__csub",	Bsub	},      /** __csub(x,y) */
+	{ "__tostring",	Btostring}, /** __tostring(x) */
+	{ "__unm",	Bneg	},      /** __unm(x) */
 	{ "add",	Badd	},
 	{ "compare",	Bcompare},
 	{ "digits",	Bdigits	},

@@ -1,4 +1,19 @@
 
+var A = {t: {f: 7}, n: 3}
+function A::mutate(yy) {
+    this.t.f *= yy
+    this.n += yy
+}
+A::mutate(10)
+assert(A.t.f == 70 && A.n == 13)
+
+var B = [1,[2,3],4,5]
+B[1][1] *= 3
+assert(B[1][1] == 9);
+var ind = 0
+B[ind + 1][1] *= 3
+assert(B[ind + 1][1] == 27);
+
 var x, y = "private x", "private y"
 public var x = ["asdasdad"]
 global.x.gg = "gg"
@@ -42,14 +57,6 @@ print(table.concat(t,",",1))
 for each (var i = 0 to $q - 1) {
     print(i .."] "..tostring(q[i]))
 }
-
-var A = {tt: {x: 20}}
-function A::ax(yy) {
-    ////this.tt.x += yy
-}
-A::ax(10)
-print(A.tt.x)
-
 
 function fibonacci(n) {
     if (n <= 1) {
