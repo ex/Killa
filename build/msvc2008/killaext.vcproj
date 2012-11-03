@@ -379,6 +379,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\kubit.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\kubit.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\kundump.c"
 				>
 			</File>

@@ -40,11 +40,15 @@
 
 
 #define KILLA_VERSION_MAJOR     "0"
-#define KILLA_VERSION_MINOR     "1"
+#define KILLA_VERSION_MINOR     "2"
 #define KILLA_VERSION_NUM		10
 #define KILLA_VERSION_RELEASE	"0"
 
+#ifdef KILLA_EXTENDED
+#define KILLA_VERSION	"KillaExt " KILLA_VERSION_MAJOR "." KILLA_VERSION_MINOR
+#else
 #define KILLA_VERSION	"Killa " KILLA_VERSION_MAJOR "." KILLA_VERSION_MINOR
+#endif
 #define KILLA_RELEASE	KILLA_VERSION "." KILLA_VERSION_RELEASE
 #define KILLA_COPYRIGHT	KILLA_RELEASE "  Copyright (C) 2012 Laurens Rodriguez"
 #define KILLA_AUTHORS	"L. Rodriguez, R. Ierusalimschy, L. H. de Figueiredo, W. Celes"

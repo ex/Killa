@@ -23,7 +23,7 @@
 #include "killalib.h"
 #include "kauxlib.h"
 
-#ifdef KILLA_EXT_BC
+#ifdef KILLA_EXTENDED_BC
 #include "lbc.h"
 #endif
 
