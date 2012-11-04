@@ -1,0 +1,129 @@
+ 
+var USE_BC = true // Set this to false if you don't have bc library.
+var one = (USE_BC)? require("bc").number(1) : 1
+
+var IN = 1
+var OUT = 2
+
+// Insert board to state.
+// If the board is already present just increase the board counter.
+function insertBoard(state, board, boardCount) {
+    if (state[board] == null) {
+        state[board] = boardCount
+    }
+    else {
+        state[board] += boardCount
+    }
+}
+
+function setRow(board, row, value) {
+    return (board & ~(3 << 2 * row)) | (value << 2 * row);
+}
+
+function addRow(board, row, value) {
+    return board | (value << 2 * row);
+}
+
+function getRow(board, row) {
+    return (board & (3 << 2 * row)) >> 2 * row;
+}
+
+//function setRow(board, row, value) {
+//    board = bit32.band(board,  bit32.bnot(bit32.lshift(3, 2 * row)));
+//    return bit32.bor(board, bit32.lshift(value, 2 * row));
+//}
+//
+//function addRow(board, row, value) {
+//    return bit32.bor(board, bit32.lshift(value, 2 * row));
+//}
+//
+//function getRow(board, row) {
+//    return bit32.rshift(bit32.band(board, bit32.lshift(3, 2 * row)), 2 * row);
+//}
+
+//function setRow(board, row, value) {
+//    return bit32.replace(board, value, 2 * row, 2)
+//}
+//
+//function addRow(board, row, value) {
+//    return bit32.bor(board, bit32.lshift(value, 2 * row));
+//}
+//
+//function getRow(board, row) {
+//    return bit32.extract(board, 2 * row, 2);
+//}
+
+function printBoard(board, n) {
+    var s = ""
+    for (var k = 0; k < n; k += 1) {
+        s ..= (board & 3)
+        board = board >> 2
+    }
+    print(s)
+}
+
+function euler_393(n) {
+    // Initial board has no ants moving IN or OUT (all bits zero)
+    // Initial state contains only the initial board.
+    var state = {}
+    state[0] = one;
+
+    // Columns
+    for each (var col = 0 to n - 1) {
+        // Rows
+        for each (var row = 0 to n - 1) {
+            var newState = {}
+            var newBoard
+            for each (var board, boardCount in pairs(state)) {
+                // Every cell uses 2 bits.
+                var cell = getRow(board, row);
+                if (cell == 0) {
+                    if ((row < n - 1) && (col < n - 1)) {
+                        var cellBelow = getRow(board, row + 1);
+                        if (cellBelow != IN) {
+                            newBoard = setRow(board, row, OUT)
+                            newBoard = addRow(newBoard, row + 1, IN)
+                            insertBoard(newState, newBoard, boardCount)
+                        }
+                        if (cellBelow  != OUT) {
+                            newBoard = setRow(board, row, IN)
+                            newBoard = addRow(newBoard, row + 1, OUT)
+                            insertBoard(newState, newBoard, boardCount)
+                        }
+                    }
+                }
+                else if (cell == IN) {
+                    if ((row < n - 1) && (getRow(board, row + 1) != IN)) {
+                        newBoard = setRow(board, row, 0)
+                        newBoard = addRow(newBoard, row + 1, IN)
+                        insertBoard(newState, newBoard, boardCount)
+                    }
+                    if (col < n - 1) {
+                        insertBoard(newState, board, boardCount)
+                    }
+                }
+                else if (cell == OUT) {
+                    if ((row < n - 1) && (getRow(board, row + 1) != OUT)) {
+                        newBoard = setRow(board, row, 0)
+                        newBoard = addRow(newBoard, row + 1, OUT)
+                        insertBoard(newState, newBoard, boardCount)
+                    }
+                    if (col < n - 1) {
+                        insertBoard(newState, board, boardCount)
+                    }
+                }
+                else {
+                    // cell == IN + OUT
+                    newBoard = setRow(board, row, 0)
+                    insertBoard(newState, newBoard, boardCount)
+                }
+            }
+            state = newState
+        }
+    }
+    return (state[0] != null)? state[0] : 0
+}
+
+var tm = os.clock()
+print(euler_393(10))
+print("Time: ", os.clock() - tm) 
