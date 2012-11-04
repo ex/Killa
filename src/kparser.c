@@ -1092,18 +1092,18 @@ static killaK_BinOpr getbinopr (int op) {
 static const struct {
   killa_ubyte left;  /* left priority for each binary operator */
   killa_ubyte right; /* right priority */
-} priority[] = {  /* ORDER OPR */
-   {6, 6}, {6, 6}, {7, 7}, {7, 7}, {7, 7},  /* `+' `-' `*' `/' `%' */
-   {10, 9},                         /* ** (right associative) */
-   {7,7}, {5,5}, {6,6},             /* bitwise and/or/xor */
-   {10,9}, {10,9},                  /* bitwise lsh/rsh */
-   {5, 4},                          /* .. (right associative) */
-   {3, 3}, {3, 3}, {3, 3},          /* ==, <, <= */
-   {3, 3}, {3, 3}, {3, 3},          /* !=, >, >= */
-   {2, 2}, {1, 1}                   /* &&, || */
+} priority[] = { /* ORDER OPR */
+   {10, 10}, {10, 10}, {11, 11}, {11, 11}, {11, 11},  /* '+', '-', '*', '/', '%' */
+   {14, 13},                /* ** (right associative) */
+   {7,7}, {5,5}, {6,6},     /* '&', '|', '^' */
+   {9,8}, {9,8},            /* '<<', '>>' (right associative) */
+   {5, 4},                  /* '..' (right associative) */
+   {3, 3}, {3, 3}, {3, 3},  /* '==', '<', '<=' */
+   {3, 3}, {3, 3}, {3, 3},  /* '!=', '>', '>=' */
+   {2, 2}, {1, 1}           /* '&&', '||' */
 };
 
-#define UNARY_PRIORITY	8  /* priority for unary operators */
+#define UNARY_PRIORITY	12  /* priority for unary operators */
 
 
 /*
