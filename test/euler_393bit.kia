@@ -69,9 +69,9 @@ function euler_393(n) {
     state[0] = one;
 
     // Columns
-    for each (var col = 0 to n - 1) {
+    for (var col = 0; col < n; col += 1) {
         // Rows
-        for each (var row = 0 to n - 1) {
+        for (var row = 0; row < n; row += 1) {
             var newState = {}
             var newBoard
             for each (var board, boardCount in pairs(state)) {

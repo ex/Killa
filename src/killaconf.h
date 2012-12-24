@@ -243,12 +243,6 @@
 #if defined(KILLA_COMPAT_ALL)	/* { */
 
 /*
-@@ KILLA_COMPAT_UNPACK controls the presence of global 'unpack'.
-** You can replace it with 'table.unpack'.
-*/
-#define KILLA_COMPAT_UNPACK
-
-/*
 @@ KILLA_COMPAT_LOADERS controls the presence of table 'package.loaders'.
 ** You can replace it with 'package.searchers'.
 */

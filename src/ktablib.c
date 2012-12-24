@@ -121,9 +121,9 @@ static int pack (killa_State *L) {
   if (n > 0) {  /* at least one element? */
     int i;
     killa_pushvalue(L, 1);
-    killa_rawseti(L, -2, 1);  /* insert first element */
+    killa_rawseti(L, -2, KILLA_BASE);  /* insert first element */
     killa_replace(L, 1);  /* move table into index 1 */
-    for (i = n; i >= 2; i--)  /* assign other elements */
+    for (i = n - 1 + KILLA_BASE; i >= 1 + KILLA_BASE; i--)  /* assign other elements */
       killa_rawseti(L, 1, i);
   }
   return 1;  /* return table */
@@ -133,8 +133,8 @@ static int pack (killa_State *L) {
 static int unpack (killa_State *L) {
   int i, e, n;
   killaL_checktype(L, 1, KILLA_TTABLE);
-  i = killaL_optint(L, 2, 1);
-  e = killaL_opt(L, killaL_checkint, 3, killaL_len(L, 1));
+  i = killaL_optint(L, 2, KILLA_BASE);
+  e = killaL_opt(L, killaL_checkint, 3, killaL_len(L, 1) - 1 + KILLA_BASE);
   if (i > e) return 0;  /* empty range */
   n = e - i + 1;  /* number of elements */
   if (n <= 0 || !killa_checkstack(L, n))  /* n <= 0 means arith. overflow */
@@ -267,11 +267,6 @@ static const killaL_Reg tab_funcs[] = {
 
 KILLAMOD_API int killaopen_table (killa_State *L) {
   killaL_newlib(L, tab_funcs);
-#if defined(KILLA_COMPAT_UNPACK)
-  /* _G.unpack = table.unpack */
-  killa_getfield(L, -1, "unpack");
-  killa_setglobal(L, "unpack");
-#endif
   return 1;
 }
 
