@@ -33,7 +33,7 @@ CORE_O=	kapi.o kcode.o kctype.o kdebug.o kdo.o kdump.o kfunc.o kgc.o klex.o \
 	kmem.o kobject.o kopcodes.o kparser.o kstate.o kstring.o ktable.o \
 	ktm.o kundump.o kvm.o kzio.o
 LIB_O=	kauxlib.o kbaselib.o kbitlib.o kcorolib.o kdblib.o kiolib.o \
-	kmathlib.o koslib.o kstrlib.o ktablib.o koadlib.o kinit.o
+	kmathlib.o koslib.o kstrlib.o ktablib.o koadlib.o kinit.o kubit.o
 BASE_O= $(CORE_O) $(LIB_O) $(MYOBJS)
 
 KILLA_T=	killa
