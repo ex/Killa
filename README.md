@@ -6,7 +6,7 @@ Killa is a work in progress but it is already functional and has been tested ins
 
 ### Documentation
 
-Proper ducumentation is missing but most of the functions are straightforward lua functions, with the same functionality, except index zero changes. Some blog posts exist and you can also check the script examples in the /test folder.
+Proper ducumentation is missing but most of the functions are straightforward lua functions, with the same functionality, except index zero changes. Some blog posts exist and you can also check the script examples in the [test](https://github.com/ex/Killa/tree/master/test) folder.
 
   * http://elrinconde-ex.blogspot.com/2012/09/killa-my-scripting-language-based-in.html
 
