@@ -8,23 +8,35 @@ use diagnostics;
 
 use File::Basename;
 use File::Copy::Recursive qw( fcopy );
-use File::Path qw( make_path );
+use File::Path qw( make_path rmtree );
 
 my $SOURCE_PATH = '../src';
 my $COMPARE_PATH = '../temp';
 
+rmtree( $COMPARE_PATH );
+make_path( "$COMPARE_PATH/killa" );
 recurse( $SOURCE_PATH, \&processKillaFile );
 
 ##------------------------------------------------------------------------------
 sub processKillaFile
 {
-    my $file = $_[0];
-    my $copyFile = basename( $_[0] );
-    $copyFile =~ s/killa/lua/;
-    $copyFile =~ s/^k(\S+)\./l$1\./;
-    make_path( "$COMPARE_PATH/killa" );
-    print "$copyFile\n";
-    fcopy( $file, "$COMPARE_PATH/killa/$copyFile" );
+    my $origFile = $_[0];
+    my $destFile = basename( $_[0] );
+    $destFile =~ s/killa/lua/;
+    $destFile =~ s/^k(\S+)\./l$1\./;
+    $destFile = "$COMPARE_PATH/killa/$destFile";
+    print "$destFile\n";
+
+    open( my $file, '<', $origFile ) or die( "Can't open $origFile: $!" );
+    open( my $temp, '>', $destFile ) or die( "Can't create $destFile: $!" );
+    while ( my $line = <$file> )
+    {
+        $line =~ s/killa/lua/g;
+        $line =~ s/KILLA/LUA/g;
+        print( $temp $line );
+    }
+    close( $file );
+    close( $temp );
 }
 
 ##------------------------------------------------------------------------------
