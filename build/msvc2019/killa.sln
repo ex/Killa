@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1082
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "killa", "killa.vcxproj", "{9F100C8D-465E-4860-B7DD-1E2E51FA98A9}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "killac", "killac.vcxproj", "{9F100C8D-465E-4860-B7DD-1E2E51FA9819}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "killaext", "killaext.vcxproj", "{9F100C8D-465E-4860-B7DD-1E2E51FA98A0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9F100C8D-465E-4860-B7DD-1E2E51FA98A9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9F100C8D-465E-4860-B7DD-1E2E51FA98A9}.Debug|Win32.Build.0 = Debug|Win32
+		{9F100C8D-465E-4860-B7DD-1E2E51FA98A9}.Release|Win32.ActiveCfg = Release|Win32
+		{9F100C8D-465E-4860-B7DD-1E2E51FA98A9}.Release|Win32.Build.0 = Release|Win32
+		{9F100C8D-465E-4860-B7DD-1E2E51FA9819}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9F100C8D-465E-4860-B7DD-1E2E51FA9819}.Debug|Win32.Build.0 = Debug|Win32
+		{9F100C8D-465E-4860-B7DD-1E2E51FA9819}.Release|Win32.ActiveCfg = Release|Win32
+		{9F100C8D-465E-4860-B7DD-1E2E51FA9819}.Release|Win32.Build.0 = Release|Win32
+		{9F100C8D-465E-4860-B7DD-1E2E51FA98A0}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9F100C8D-465E-4860-B7DD-1E2E51FA98A0}.Debug|Win32.Build.0 = Debug|Win32
+		{9F100C8D-465E-4860-B7DD-1E2E51FA98A0}.Release|Win32.ActiveCfg = Release|Win32
+		{9F100C8D-465E-4860-B7DD-1E2E51FA98A0}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {23FDDB2D-4689-40C5-96AA-0357FCA3919A}
+	EndGlobalSection
+EndGlobal

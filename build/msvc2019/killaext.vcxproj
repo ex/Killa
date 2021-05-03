@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{9F100C8D-465E-4860-B7DD-1E2E51FA98A0}</ProjectGuid>
+    <RootNamespace>killa</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>15.0.28307.799</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>../../bin/windows/\</OutDir>
+    <IntDir>$(ProjectName).$(Configuration)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>../../bin/windows/\</OutDir>
+    <IntDir>$(ProjectName).$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>../../src;../../ext/bc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;KILLA_EXTENDED;KILLA_EXTENDED_BC;__STDC__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>../../src;../../ext/bc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;KILLA_EXTENDED;KILLA_EXTENDED_BC;__STDC__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\ext\bc\lbc.c" />
+    <ClCompile Include="..\..\ext\bc\number.c" />
+    <ClCompile Include="..\..\src\kapi.c" />
+    <ClCompile Include="..\..\src\kauxlib.c" />
+    <ClCompile Include="..\..\src\kbaselib.c" />
+    <ClCompile Include="..\..\src\kbitlib.c" />
+    <ClCompile Include="..\..\src\kcode.c" />
+    <ClCompile Include="..\..\src\kcorolib.c" />
+    <ClCompile Include="..\..\src\kctype.c" />
+    <ClCompile Include="..\..\src\kdblib.c" />
+    <ClCompile Include="..\..\src\kdebug.c" />
+    <ClCompile Include="..\..\src\kdo.c" />
+    <ClCompile Include="..\..\src\kdump.c" />
+    <ClCompile Include="..\..\src\kfunc.c" />
+    <ClCompile Include="..\..\src\kgc.c" />
+    <ClCompile Include="..\..\src\killa.c" />
+    <ClCompile Include="..\..\src\kinit.c" />
+    <ClCompile Include="..\..\src\kiolib.c" />
+    <ClCompile Include="..\..\src\klex.c" />
+    <ClCompile Include="..\..\src\kmathlib.c" />
+    <ClCompile Include="..\..\src\kmem.c" />
+    <ClCompile Include="..\..\src\koadlib.c" />
+    <ClCompile Include="..\..\src\kobject.c" />
+    <ClCompile Include="..\..\src\kopcodes.c" />
+    <ClCompile Include="..\..\src\koslib.c" />
+    <ClCompile Include="..\..\src\kparser.c" />
+    <ClCompile Include="..\..\src\kstate.c" />
+    <ClCompile Include="..\..\src\kstring.c" />
+    <ClCompile Include="..\..\src\kstrlib.c" />
+    <ClCompile Include="..\..\src\ktable.c" />
+    <ClCompile Include="..\..\src\ktablib.c" />
+    <ClCompile Include="..\..\src\ktm.c" />
+    <ClCompile Include="..\..\src\kubit.c" />
+    <ClCompile Include="..\..\src\kundump.c" />
+    <ClCompile Include="..\..\src\kvm.c" />
+    <ClCompile Include="..\..\src\kzio.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\ext\bc\config.h" />
+    <ClInclude Include="..\..\ext\bc\lbc.h" />
+    <ClInclude Include="..\..\ext\bc\number.h" />
+    <ClInclude Include="..\..\src\kapi.h" />
+    <ClInclude Include="..\..\src\kauxlib.h" />
+    <ClInclude Include="..\..\src\kcode.h" />
+    <ClInclude Include="..\..\src\kctype.h" />
+    <ClInclude Include="..\..\src\kdebug.h" />
+    <ClInclude Include="..\..\src\kdo.h" />
+    <ClInclude Include="..\..\src\kfunc.h" />
+    <ClInclude Include="..\..\src\kgc.h" />
+    <ClInclude Include="..\..\src\killa.h" />
+    <ClInclude Include="..\..\src\killaconf.h" />
+    <ClInclude Include="..\..\src\killalib.h" />
+    <ClInclude Include="..\..\src\klex.h" />
+    <ClInclude Include="..\..\src\klimits.h" />
+    <ClInclude Include="..\..\src\klua.h" />
+    <ClInclude Include="..\..\src\kmem.h" />
+    <ClInclude Include="..\..\src\kobject.h" />
+    <ClInclude Include="..\..\src\kopcodes.h" />
+    <ClInclude Include="..\..\src\kparser.h" />
+    <ClInclude Include="..\..\src\kstate.h" />
+    <ClInclude Include="..\..\src\kstring.h" />
+    <ClInclude Include="..\..\src\ktable.h" />
+    <ClInclude Include="..\..\src\ktm.h" />
+    <ClInclude Include="..\..\src\kubit.h" />
+    <ClInclude Include="..\..\src\kundump.h" />
+    <ClInclude Include="..\..\src\kvm.h" />
+    <ClInclude Include="..\..\src\kzio.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

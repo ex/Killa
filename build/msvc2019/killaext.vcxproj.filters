@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="killa">
+      <UniqueIdentifier>{c9fb1e4d-0ab7-40a6-9473-6699b1eb5321}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="bc">
+      <UniqueIdentifier>{9450f97a-eed7-49fd-bf64-f05c05e5301a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\kapi.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kauxlib.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kbaselib.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kbitlib.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kcode.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kcorolib.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kctype.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kdblib.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kdebug.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kdo.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kdump.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kfunc.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kgc.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\killa.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kinit.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kiolib.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\klex.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kmathlib.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kmem.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\koadlib.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kobject.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kopcodes.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\koslib.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kparser.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kstate.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kstring.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kstrlib.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ktable.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ktablib.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ktm.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kubit.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kundump.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kvm.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kzio.c">
+      <Filter>killa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ext\bc\lbc.c">
+      <Filter>bc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ext\bc\number.c">
+      <Filter>bc</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\kapi.h">
+      <Filter>killa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kauxlib.h">
+      <Filter>killa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kcode.h">
+      <Filter>killa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kctype.h">
+      <Filter>killa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kdebug.h">
+      <Filter>killa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kdo.h">
+      <Filter>killa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kfunc.h">
+      <Filter>killa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kgc.h">
+      <Filter>killa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\killa.h">
+      <Filter>killa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\killaconf.h">
+      <Filter>killa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\killalib.h">
+      <Filter>killa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\klex.h">
+      <Filter>killa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\klimits.h">
+      <Filter>killa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\klua.h">
+      <Filter>killa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kmem.h">
+      <Filter>killa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kobject.h">
+      <Filter>killa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kopcodes.h">
+      <Filter>killa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kparser.h">
+      <Filter>killa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kstate.h">
+      <Filter>killa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kstring.h">
+      <Filter>killa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\ktable.h">
+      <Filter>killa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\ktm.h">
+      <Filter>killa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kubit.h">
+      <Filter>killa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kundump.h">
+      <Filter>killa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kvm.h">
+      <Filter>killa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kzio.h">
+      <Filter>killa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ext\bc\config.h">
+      <Filter>bc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ext\bc\lbc.h">
+      <Filter>bc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ext\bc\number.h">
+      <Filter>bc</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
