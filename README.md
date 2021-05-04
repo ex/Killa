@@ -6,7 +6,7 @@ Killa is a work in progress but it is already functional and has been tested ins
 
 ### Documentation
 
-Proper documentation is missing but most of the functions are straightforward Lua functions, with the same functionality, except index zero changes. Some blog posts exist and you can also check the script examples in the [test](https://github.com/ex/Killa/tree/master/test) folder. The Spanish Thesis from where this project was born is [here](https://github.com/ex/Killa/raw/master/Killa%2C%20un%20lenguaje%20de%20programacion%20basado%20en%20Lua%20y%20JavaScript.pdf)
+Proper documentation is missing but most of the functions are straightforward Lua functions, with the same functionality, except index zero changes. Some blog posts exist and you can also check the script examples in the [test](https://github.com/ex/Killa/tree/master/test) folder. The Spanish Thesis from where this project was born is [here](https://github.com/ex/Killa/raw/master/doc/Killa%2C%20un%20lenguaje%20de%20programacion%20basado%20en%20Lua%20y%20JavaScript.pdf)
 
   * http://elrinconde-ex.blogspot.com/2012/09/killa-my-scripting-language-based-in.html
 
