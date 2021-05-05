@@ -1,0 +1,115 @@
+1	2	3
+100	200	300	3
+gg	null
+private x	private y
+global f()
+local f()
+0) 100
+1) 200
+2) 300
+0) 100
+1) 200
+2) 300
+3
+0) 100
+1) 200
+2
+3
+0) 100
+1) 200
+2) 700
+200,100
+0] 100
+1] 200
+2] 700
+89
+120
+found a Pythagorean triple:	4	3	5
+now trying next z...
+found a Pythagorean triple:	8	6	10
+now trying next z...
+2) 1 2 4 8 16 32 64 128 256 512 1024 2048 4096 8192 16384 32768 65536 131072 262144 524288 
+3) 1 3 9 27 81 243 729 2187 6561 19683 59049 177147 531441 
+4) 1 4 16 64 256 1024 4096 16384 65536 262144 
+5) 1 5 25 125 625 3125 15625 78125 390625 
+6) 1 6 36 216 1296 7776 46656 279936 
+7) 1 7 49 343 2401 16807 117649 823543 
+8) 1 8 64 512 4096 32768 262144 
+9) 1 9 81 729 6561 59049 531441 
+10
+20
+30
+40
+2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97
+2^0 = 1
+2^1 = 2
+2^2 = 4
+2^3 = 8
+2^4 = 16
+2^5 = 32
+2^6 = 64
+2^7 = 128
+2^8 = 256
+2^9 = 512
+- 5 Buzz
+- 6 Fizz
+- 7
+- 8
+- 9 Fizz
+- 10 Buzz
+- 11
+- 12 Fizz
+- 13
+- 14
+- 15 FizzBuzz
+1: 0
+2: 1
+3: 1
+4: 2
+5: 3
+6: 5
+7: 8
+8: 13
+9: 21
+10: 34
+11: 55
+12: 89
+13: 144
+14: 233
+15: 377
+16: 610
+17: 987
+18: 1597
+19: 2584
+20: 4181
+10
+12
+11
+10
+closures[0](): 21
+closures[0](): 22
+closures[0](): 23
+closures[1](): 21
+closures[0](): 204
+closures[1](): 202
+trueExpr
+even
+30
+null
+4 bottles of beer on the wall, 4 bottles of beer.
+Take one down and pass it around, 3 bottles of beer on the wall.
+
+3 bottles of beer on the wall, 3 bottles of beer.
+Take one down and pass it around, 2 bottles of beer on the wall.
+
+2 bottles of beer on the wall, 2 bottles of beer.
+Take one down and pass it around, 1 bottles of beer on the wall.
+
+1 bottle of beer on the wall, 1 bottle of beer.
+Take one down and pass it around, no more bottles of beer on the wall.
+
+No more bottles of beer on the wall, no more bottles of beer.
+Go to the store and buy some more, 99 bottles of beer on the wall.
+
+3.1415976535648
+3.1415926535898

@@ -10,12 +10,17 @@ use File::Basename;
 use File::Copy::Recursive qw( fcopy );
 use File::Path qw( make_path rmtree );
 
-my $SOURCE_PATH = '../src';
+my $LUA_PATH = '../lua/lua-5.2.0';
+my $KILLA_PATH = '../src';
 my $COMPARE_PATH = '../temp';
 
 rmtree( $COMPARE_PATH );
 make_path( "$COMPARE_PATH/killa" );
-recurse( $SOURCE_PATH, \&processKillaFile );
+recurse( $KILLA_PATH, \&processKillaFile );
+
+make_path( "$COMPARE_PATH/lua" );
+recurse( $LUA_PATH, \&processLuaFile );
+
 
 ##------------------------------------------------------------------------------
 sub processKillaFile
@@ -33,6 +38,23 @@ sub processKillaFile
     {
         $line =~ s/killa/lua/g;
         $line =~ s/KILLA/LUA/g;
+        print( $temp $line );
+    }
+    close( $file );
+    close( $temp );
+}
+
+##------------------------------------------------------------------------------
+sub processLuaFile
+{
+    my $origFile = $_[0];
+    my $destFile = basename( $_[0] );
+    $destFile = "$COMPARE_PATH/lua/$destFile";
+
+    open( my $file, '<', $origFile ) or die( "Can't open $origFile: $!" );
+    open( my $temp, '>', $destFile ) or die( "Can't create $destFile: $!" );
+    while ( my $line = <$file> )
+    {
         print( $temp $line );
     }
     close( $file );
