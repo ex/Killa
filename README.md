@@ -19,7 +19,7 @@ Proper documentation is missing but most of the functions are straightforward Lu
 
 ### Build on Windows
 
-For Windows use the provided Visual Studio 2008 solution.
+For Windows use the provided Visual Studio 2019 Community solution.
 
 ### Build on Mac OSX
 
