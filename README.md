@@ -2,7 +2,7 @@
 
 Killa is a programming language based in Lua and Javascript. It uses the Lua virtual machine and the Lua external C API with almost no changes but it has a different syntax similar to Javascript without the prototype mechanism and the ugly parts. 
 
-Killa is a work in progress but it is already functional and has been tested inside popular game engines like the Love engine: https://bitbucket.org/ex/love and the cocos2d-x engine: https://github.com/ex/cocos2d-x
+Killa is a work in progress but it is already functional and has been tested inside popular game engines like the cocos2d-x engine: https://github.com/ex/cocos2d-x
 
 ### Documentation
 
