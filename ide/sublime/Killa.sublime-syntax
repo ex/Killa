@@ -1,0 +1,159 @@
+%YAML 1.2
+---
+name: Killa
+file_extensions: kia
+scope: source.kia
+
+## Path for installation: [$USER]\AppData\Roaming\Sublime Text 3\Packages\User\Killa.sublime-syntax
+## Documentation: http://www.sublimetext.com/docs/syntax.html
+## Using parts of: https://github.com/sublimehq/Packages/blob/master/Perl/Perl.sublime-syntax
+
+contexts:
+  main:
+    - include: keywords
+    - include: storage-type
+    - include: support-function
+    - include: comment-line
+    - include: operators
+    - include: constants-numbers
+    - include: constants-language
+    - match: '"'
+      push:  string-quoted-double
+    - match: \'
+      push:  string-quoted-single
+
+  comment-line:
+    - match: \/+
+      scope: punctuation.definition.comment.kia
+      push: comment-line-body
+
+  comment-line-body:
+    - meta_scope: meta.comment.kia comment.line.number-sign.kia
+    - match: \n
+      pop: true
+
+  keywords:
+    - match: \b(function|var|in|do|each|if|else|for|while|return)\b
+      scope: keyword.control.kia
+
+  storage-type:
+    - match: \b(local|public|global)\b
+      scope: storage.type.kia
+
+  support-function:
+    - match: \b(print|table|assert)\b
+      scope: support.function.kia
+
+  string-quoted-double:
+    - meta_scope: string.quoted.double.kia
+    - match: '"'
+      pop: true
+
+  string-quoted-single:
+    - meta_scope: string.quoted.single.kia
+    - match: \'
+      pop: true
+
+  operators:
+    - match: ','
+      scope: punctuation.separator.sequence..kia
+    - match: ;
+      scope: punctuation.terminator.statement..kia
+    - match: ==|!=|>=|<=
+      scope: keyword.operator.comparison..kia
+    - match: \&\&|\|\|
+      scope: keyword.operator.logical..kia
+    - match: \*\*=|[-+*/%]=|=
+      scope: keyword.operator.assignment..kia
+
+  constants-numbers:
+    # decimal floats
+    - match:  |-
+        (?ix:
+          (") ( [-+]? ) (
+          (\.)[\d_]+ (?: e[-+]?[\d_]+ )?  |  # .1 .1e1 .1e-1 .1e+1
+              [\d_]+ (?: (\.) (?:
+              [\d_]+ (?: e[-+]?[\d_]+ )?  |  # 1.1 1.1e1 1.1e-1 1.1e+1
+                         e[-+]?[\d_]+ )?  |  # 1. 1.e1 1.e-1 1.e+1
+                         e[-+]?[\d_]+ )      # 1e1 1e-1 1e+1
+          ) (")
+        )
+      scope: meta.string.kia string.quoted.double.kia
+      captures:
+        1: punctuation.definition.string.begin.kia
+        2: meta.number.float.decimal.kia constant.numeric.sign.kia
+        3: meta.number.float.decimal.kia constant.numeric.value.kia
+        4: punctuation.separator.decimal.kia
+        5: punctuation.separator.decimal.kia
+        6: punctuation.definition.string.end.kia
+    - match:  |-
+        (?ix:
+          (') ( [-+]? ) (
+          (\.)[\d_]+ (?: e[-+]?[\d_]+ )?  |  # .1 .1e1 .1e-1 .1e+1
+              [\d_]+ (?: (\.) (?:
+              [\d_]+ (?: e[-+]?[\d_]+ )?  |  # 1.1 1.1e1 1.1e-1 1.1e+1
+                         e[-+]?[\d_]+ )?  |  # 1. 1.e1 1.e-1 1.e+1
+                         e[-+]?[\d_]+ )      # 1e1 1e-1 1e+1
+          ) (')
+        )
+      scope: meta.string.kia string.quoted.single.kia
+      captures:
+        1: punctuation.definition.string.begin.kia
+        2: meta.number.float.decimal.kia constant.numeric.sign.kia
+        3: meta.number.float.decimal.kia constant.numeric.value.kia
+        4: punctuation.separator.decimal.kia
+        5: punctuation.separator.decimal.kia
+        6: punctuation.definition.string.end.kia
+    - match: |-
+        (?ix:
+          (\.)[\d_]+ (?: e[-+]?[\d_]+   )? \b |  # .1 .1e1 .1e-1 .1e+1
+            \b[\d_]+ (?: (\.) (?: (?:
+              [\d_]+ (?: e[-+]?[\d_]+   )? \b |  # 1.1 1.1e1 1.1e-1 1.1e+1
+                         e[-+]?[\d_]+\b )     |  # 1.e1 1.e-1 1.e+1
+                         (?=[^.]))            |  # 1. (protect the .. operator)
+                         e[-+]?[\d_]+\b )        # 1e1 1e-1 1e+1
+        )
+      scope: meta.number.float.decimal.kia constant.numeric.value.kia
+      captures:
+        1: punctuation.separator.decimal.kia
+        2: punctuation.separator.decimal.kia
+    # decimal integers
+    - match: (")([-+]?)([\d_]+)(")
+      scope: meta.string.kia string.quoted.double.kia
+      captures:
+        1: punctuation.definition.string.begin.kia
+        2: meta.number.integer.decimal.kia constant.numeric.sign.kia
+        3: meta.number.integer.decimal.kia constant.numeric.value.kia
+        4: punctuation.definition.string.end.kia
+    - match: (')([-+]?)([\d_]+)(')
+      scope: meta.string.kia string.quoted.single.kia
+      captures:
+        1: punctuation.definition.string.begin.kia
+        2: meta.number.integer.decimal.kia constant.numeric.sign.kia
+        3: meta.number.integer.decimal.kia constant.numeric.value.kia
+        4: punctuation.definition.string.end.kia
+    # binary integers
+    - match: \b(0[bB])([01_]+)\b
+      scope: meta.number.integer.binary.kia
+      captures:
+        1: constant.numeric.base.kia
+        2: constant.numeric.value.kia
+    # hexadecimal integers
+    - match: \b(0[xX])([\h_]+)\b
+      scope: meta.number.integer.hexadecimal.kia
+      captures:
+        1: constant.numeric.base.kia
+        2: constant.numeric.value.kia
+    # octal integers
+    - match: \b(0)([0-7_]+)\b
+      scope: meta.number.integer.octal.kia
+      captures:
+        1: constant.numeric.base.kia
+        2: constant.numeric.value.kia
+    # decimal integers
+    - match: \b[\d_]+\b
+      scope: meta.number.integer.decimal.kia constant.numeric.value.kia
+
+  constants-language:
+    - match: \bnull|false|true\b
+      scope: constant.language.kia
