@@ -1,0 +1,34 @@
+{
+  "name": "killa-language",
+  "displayName": "Killa",
+  "description": "Syntax highlighting for the Killa programming language (.kia files)",
+  "version": "0.1.0",
+  "publisher": "killa",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ex/killa"
+  },
+  "contributes": {
+    "languages": [
+      {
+        "id": "killa",
+        "aliases": ["Killa", "killa"],
+        "extensions": [".kia"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "killa",
+        "scopeName": "source.kia",
+        "path": "./syntaxes/killa.tmLanguage.json"
+      }
+    ]
+  }
+}

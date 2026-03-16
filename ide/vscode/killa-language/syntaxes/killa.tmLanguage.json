@@ -1,0 +1,183 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Killa",
+  "scopeName": "source.kia",
+  "fileTypes": ["kia"],
+  "patterns": [
+    { "include": "#comment" },
+    { "include": "#string-double" },
+    { "include": "#string-single" },
+    { "include": "#keyword-control" },
+    { "include": "#keyword-storage" },
+    { "include": "#constant-language" },
+    { "include": "#constant-numeric" },
+    { "include": "#support-function" },
+    { "include": "#variable-language" },
+    { "include": "#operator" },
+    { "include": "#punctuation" }
+  ],
+  "repository": {
+
+    "comment": {
+      "name": "comment.line.double-slash.kia",
+      "match": "//.*$"
+    },
+
+    "string-double": {
+      "name": "string.quoted.double.kia",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.kia",
+          "match": "\\\\."
+        }
+      ]
+    },
+
+    "string-single": {
+      "name": "string.quoted.single.kia",
+      "begin": "'",
+      "end": "'",
+      "patterns": [
+        {
+          "name": "constant.character.escape.kia",
+          "match": "\\\\."
+        }
+      ]
+    },
+
+    "keyword-control": {
+      "name": "keyword.control.kia",
+      "match": "\\b(break|continue|do|each|else|for|function|goto|if|in|return|to|while)\\b"
+    },
+
+    "keyword-storage": {
+      "name": "storage.type.kia",
+      "match": "\\b(global|local|public|var)\\b"
+    },
+
+    "constant-language": {
+      "name": "constant.language.kia",
+      "match": "\\b(false|null|true)\\b"
+    },
+
+    "constant-numeric": {
+      "patterns": [
+        {
+          "comment": "hexadecimal",
+          "name": "constant.numeric.hex.kia",
+          "match": "\\b0[xX][0-9a-fA-F_]+\\b"
+        },
+        {
+          "comment": "binary",
+          "name": "constant.numeric.binary.kia",
+          "match": "\\b0[bB][01_]+\\b"
+        },
+        {
+          "comment": "octal",
+          "name": "constant.numeric.octal.kia",
+          "match": "\\b0[0-7_]+\\b"
+        },
+        {
+          "comment": "float",
+          "name": "constant.numeric.float.kia",
+          "match": "\\b[0-9][0-9_]*(?:\\.[0-9_]*)?(?:[eE][+-]?[0-9_]+)?\\b|\\.[0-9][0-9_]*(?:[eE][+-]?[0-9_]+)?\\b"
+        },
+        {
+          "comment": "integer",
+          "name": "constant.numeric.integer.kia",
+          "match": "\\b[0-9][0-9_]*\\b"
+        }
+      ]
+    },
+
+    "support-function": {
+      "name": "support.function.kia",
+      "match": "\\b(assert|collectgarbage|error|ipairs|load|next|pairs|pcall|print|rawequal|rawget|rawlen|rawset|require|select|setmetatable|getmetatable|tonumber|tostring|type|unpack|xpcall|coroutine|io|math|os|string|table)\\b"
+    },
+
+    "variable-language": {
+      "name": "variable.language.kia",
+      "match": "\\b(this)\\b"
+    },
+
+    "operator": {
+      "patterns": [
+        {
+          "comment": "method call separator",
+          "name": "keyword.operator.accessor.kia",
+          "match": "::"
+        },
+        {
+          "comment": "comparison operators",
+          "name": "keyword.operator.comparison.kia",
+          "match": "==|!=|>=|<="
+        },
+        {
+          "comment": "logical operators",
+          "name": "keyword.operator.logical.kia",
+          "match": "&&|\\|\\||!"
+        },
+        {
+          "comment": "ternary operator",
+          "name": "keyword.operator.ternary.kia",
+          "match": "\\?|:"
+        },
+        {
+          "comment": "power operator",
+          "name": "keyword.operator.arithmetic.kia",
+          "match": "\\*\\*"
+        },
+        {
+          "comment": "string concatenation",
+          "name": "keyword.operator.concat.kia",
+          "match": "\\.\\."
+        },
+        {
+          "comment": "length operator",
+          "name": "keyword.operator.length.kia",
+          "match": "\\$"
+        },
+        {
+          "comment": "compound assignment",
+          "name": "keyword.operator.assignment.kia",
+          "match": "\\*\\*=|(?:[-+*/%&|^]|\\.\\.)="
+        },
+        {
+          "comment": "assignment",
+          "name": "keyword.operator.assignment.kia",
+          "match": "="
+        },
+        {
+          "comment": "arithmetic operators",
+          "name": "keyword.operator.arithmetic.kia",
+          "match": "[-+*/%]"
+        },
+        {
+          "comment": "comparison (angle brackets)",
+          "name": "keyword.operator.comparison.kia",
+          "match": "[<>]"
+        }
+      ]
+    },
+
+    "punctuation": {
+      "patterns": [
+        {
+          "name": "punctuation.terminator.statement.kia",
+          "match": ";"
+        },
+        {
+          "name": "punctuation.separator.comma.kia",
+          "match": ","
+        },
+        {
+          "name": "punctuation.accessor.dot.kia",
+          "match": "\\."
+        }
+      ]
+    }
+
+  }
+}
