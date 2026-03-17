@@ -4,6 +4,7 @@
   "scopeName": "source.kia",
   "fileTypes": ["kia"],
   "patterns": [
+    { "include": "#comment-block" },
     { "include": "#comment" },
     { "include": "#string-double" },
     { "include": "#string-single" },
@@ -17,6 +18,12 @@
     { "include": "#punctuation" }
   ],
   "repository": {
+
+    "comment-block": {
+      "name": "comment.block.kia",
+      "begin": "/\\*",
+      "end": "\\*/"
+    },
 
     "comment": {
       "name": "comment.line.double-slash.kia",

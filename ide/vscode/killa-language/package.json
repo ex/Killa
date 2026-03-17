@@ -1,8 +1,8 @@
 {
   "name": "killa-language",
   "displayName": "Killa",
-  "description": "Syntax highlighting for the Killa programming language (.kia files)",
-  "version": "0.1.0",
+  "description": "Syntax highlighting and script runner for the Killa programming language (.kia files)",
+  "version": "0.2.0",
   "publisher": "killa",
   "engines": {
     "vscode": "^1.74.0"
@@ -14,6 +14,10 @@
     "type": "git",
     "url": "https://github.com/ex/killa"
   },
+  "main": "./extension.js",
+  "activationEvents": [
+    "onLanguage:killa"
+  ],
   "contributes": {
     "languages": [
       {
@@ -29,6 +33,37 @@
         "scopeName": "source.kia",
         "path": "./syntaxes/killa.tmLanguage.json"
       }
-    ]
+    ],
+    "commands": [
+      {
+        "command": "killa.runFile",
+        "title": "Run Killa Script",
+        "icon": "$(play)",
+        "category": "Killa"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "killa.runFile",
+        "key": "f5",
+        "when": "editorLangId == killa"
+      }
+    ],
+    "menus": {
+      "editor/title/run": [
+        {
+          "command": "killa.runFile",
+          "when": "resourceExtname == .kia",
+          "group": "navigation"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "killa.runFile",
+          "when": "resourceExtname == .kia",
+          "group": "navigation"
+        }
+      ]
+    }
   }
 }
